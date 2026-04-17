@@ -6,164 +6,156 @@
 <title>Proyectos 2025</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
-:root {
-  --bg-primary: #ffffff;
-  --bg-secondary: #f5f5f3;
-  --bg-tertiary: #efefed;
-  --text-primary: #1a1a18;
-  --text-secondary: #6b6b67;
-  --border-light: rgba(0,0,0,0.1);
-  --border-mid: rgba(0,0,0,0.18);
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --blue: #3266ad;
-  --green: #639922;
-  --amber: #EF9F27;
-  --red: #E24B4A;
-  --purple: #534AB7;
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg-primary: #1c1c1a;
-    --bg-secondary: #252523;
-    --bg-tertiary: #2e2e2c;
-    --text-primary: #e8e8e4;
-    --text-secondary: #9a9a94;
-    --border-light: rgba(255,255,255,0.1);
-    --border-mid: rgba(255,255,255,0.18);
-  }
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg-tertiary); color: var(--text-primary); min-height: 100vh; }
-.app { max-width: 1100px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
-.top-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 10px; }
-.app-title { font-size: 20px; font-weight: 500; color: var(--text-primary); }
-.tabs { display: flex; gap: 4px; flex-wrap: wrap; }
-.tab { padding: 6px 14px; font-size: 13px; border: 0.5px solid var(--border-light); border-radius: var(--radius-md); cursor: pointer; background: transparent; color: var(--text-secondary); transition: all .15s; }
-.tab:hover { background: var(--bg-secondary); color: var(--text-primary); }
-.tab.active { background: var(--text-primary); color: var(--bg-primary); border-color: transparent; }
-.btn { padding: 6px 14px; font-size: 13px; border: 0.5px solid var(--border-mid); border-radius: var(--radius-md); cursor: pointer; background: transparent; color: var(--text-primary); transition: background .15s; }
-.btn:hover { background: var(--bg-secondary); }
-.controls { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-.view { display: none; }
-.view.active { display: block; }
-.projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(265px, 1fr)); gap: 12px; }
-.proj-card { background: var(--bg-primary); border: 0.5px solid var(--border-light); border-radius: var(--radius-lg); padding: 1rem 1.25rem; cursor: pointer; transition: border-color .15s; position: relative; }
-.proj-card:hover { border-color: var(--border-mid); }
-.proj-card.special { border-left: 3px solid var(--purple); }
-.card-actions { position: absolute; top: 10px; right: 10px; display: flex; gap: 4px; opacity: 0; transition: opacity .15s; }
-.proj-card:hover .card-actions { opacity: 1; }
-.ca-btn { padding: 3px 8px; font-size: 11px; border: 0.5px solid var(--border-mid); border-radius: var(--radius-md); background: var(--bg-primary); color: var(--text-secondary); cursor: pointer; }
-.ca-btn:hover { background: var(--bg-secondary); color: var(--text-primary); }
-.ca-btn.danger:hover { background: #FCEBEB; color: #791F1F; }
-.proj-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; padding-right: 76px; }
-.proj-name { font-size: 14px; font-weight: 500; color: var(--text-primary); line-height: 1.35; }
-.proj-area-tag { font-size: 11px; margin-top: 3px; display: flex; gap: 4px; flex-wrap: wrap; }
-.global-pct { font-size: 22px; font-weight: 500; color: var(--text-primary); text-align: right; }
-.global-lbl { font-size: 10px; color: var(--text-secondary); text-align: right; }
-.prog-bar { height: 5px; background: var(--bg-secondary); border-radius: 99px; overflow: hidden; margin-bottom: 12px; }
-.prog-fill { height: 100%; border-radius: 99px; background: var(--blue); transition: width .4s; }
-.q-breakdown { display: grid; grid-template-columns: repeat(4,1fr); gap: 5px; margin-bottom: 10px; }
-.q-cell { background: var(--bg-secondary); border-radius: 6px; padding: 5px 4px; text-align: center; }
-.q-cell-lbl { font-size: 10px; font-weight: 500; color: var(--text-secondary); margin-bottom: 2px; }
-.q-cell-pct { font-size: 13px; font-weight: 500; color: var(--text-primary); }
-.q-mini-bar { height: 3px; background: var(--border-light); border-radius: 99px; overflow: hidden; margin-top: 3px; }
-.q-mini-fill { height: 100%; border-radius: 99px; }
-.qf-0 { background: #b4b2a9; } .qf-low { background: var(--amber); } .qf-mid { background: var(--blue); } .qf-high { background: var(--green); }
-.proj-meta { font-size: 12px; color: var(--text-secondary); display: flex; gap: 5px; flex-wrap: wrap; align-items: center; }
-.badge { display: inline-block; padding: 2px 7px; border-radius: 99px; font-size: 11px; font-weight: 500; white-space: nowrap; }
-.b-pending { background: #E6F1FB; color: #0C447C; }
-.b-inprogress { background: #FAEEDA; color: #633806; }
-.b-delayed { background: #FCEBEB; color: #791F1F; }
-.b-done { background: #EAF3DE; color: #27500A; }
-.b-area { background: #EEEDFE; color: #3C3489; }
-.b-special { background: #EEEDFE; color: #3C3489; border: 0.5px solid #AFA9EC; }
-.panel { margin-top: 1.5rem; background: var(--bg-primary); border: 0.5px solid var(--border-light); border-radius: var(--radius-lg); overflow: hidden; }
-.panel-header { padding: .75rem 1.25rem; border-bottom: 0.5px solid var(--border-light); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
-.panel-title { font-size: 14px; font-weight: 500; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
-.udot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-.urg-item { display: flex; align-items: center; gap: 12px; padding: .65rem 1.25rem; border-bottom: 0.5px solid var(--border-light); cursor: pointer; transition: background .12s; }
-.urg-item:last-child { border-bottom: none; }
-.urg-item:hover { background: var(--bg-secondary); }
-.urg-rank { font-size: 12px; font-weight: 500; color: var(--text-secondary); min-width: 18px; text-align: center; }
-.urg-bar { width: 4px; border-radius: 99px; align-self: stretch; flex-shrink: 0; min-height: 32px; }
-.bar-ov, .bar-cr { background: var(--red); } .bar-wa { background: var(--amber); } .bar-so { background: var(--blue); }
-.urg-main { flex: 1; min-width: 0; }
-.urg-aname { font-size: 13px; font-weight: 500; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.urg-pname { font-size: 11px; color: var(--text-secondary); margin-top: 1px; }
-.urg-right { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; flex-shrink: 0; }
-.urg-days { font-size: 13px; font-weight: 500; }
-.urg-date { font-size: 11px; color: var(--text-secondary); }
-.tc-ov { color: #A32D2D; } .tc-cr { color: var(--red); } .tc-wa { color: #BA7517; } .tc-so { color: var(--blue); }
-.metrics-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: var(--border-light); }
-.metric-cell { background: var(--bg-primary); padding: .75rem 1rem; text-align: center; }
-.mc-val { font-size: 20px; font-weight: 500; color: var(--text-primary); }
-.mc-lbl { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
-.chart-wrap { padding: 1rem 1.25rem 1.25rem; }
-.legend-row { display: flex; gap: 16px; margin-bottom: 10px; font-size: 12px; color: var(--text-secondary); }
-.legend-row span { display: flex; align-items: center; gap: 4px; }
-.legend-swatch { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
-.detail-view { background: var(--bg-primary); border: 0.5px solid var(--border-light); border-radius: var(--radius-lg); padding: 1.25rem; }
-.back-btn { font-size: 13px; color: var(--text-secondary); cursor: pointer; display: flex; align-items: center; gap: 4px; margin-bottom: 1rem; background: none; border: none; }
-.back-btn:hover { color: var(--text-primary); }
-.det-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: .75rem; flex-wrap: wrap; gap: 8px; }
-.det-title { font-size: 18px; font-weight: 500; color: var(--text-primary); }
-.det-q-bar { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 1rem; }
-.det-q-card { background: var(--bg-secondary); border-radius: var(--radius-md); padding: .6rem .75rem; }
-.det-q-label { font-size: 11px; font-weight: 500; color: var(--text-secondary); margin-bottom: 4px; }
-.det-q-pct { font-size: 18px; font-weight: 500; color: var(--text-primary); }
-.det-q-sub { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
-.det-q-bar2 { height: 4px; background: var(--border-light); border-radius: 99px; overflow: hidden; margin-top: 5px; }
-.det-q-fill { height: 100%; border-radius: 99px; background: var(--blue); }
-.area-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px,1fr)); gap: 8px; margin-bottom: 1rem; }
-.area-card { background: var(--bg-secondary); border-radius: var(--radius-md); padding: .75rem 1rem; }
-.area-name { font-size: 13px; font-weight: 500; color: var(--text-primary); margin-bottom: 4px; }
-.area-pct { font-size: 20px; font-weight: 500; color: var(--text-primary); }
-.area-bar { height: 4px; background: var(--border-light); border-radius: 99px; overflow: hidden; margin-top: 5px; }
-.area-fill { height: 100%; border-radius: 99px; background: var(--purple); }
-.act-list { display: flex; flex-direction: column; gap: 7px; }
-.act-item { background: var(--bg-secondary); border-radius: var(--radius-md); padding: .65rem 1rem; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.act-name { flex: 1; font-size: 13px; color: var(--text-primary); min-width: 100px; }
-select.act-sel { font-size: 12px; padding: 3px 6px; border-radius: var(--radius-md); border: 0.5px solid var(--border-mid); background: var(--bg-primary); color: var(--text-primary); cursor: pointer; }
-input.act-date { font-size: 12px; padding: 3px 6px; border-radius: var(--radius-md); border: 0.5px solid var(--border-mid); background: var(--bg-primary); color: var(--text-primary); }
-.del-act { padding: 2px 7px; font-size: 12px; border: 0.5px solid var(--border-mid); border-radius: var(--radius-md); background: transparent; color: var(--text-secondary); cursor: pointer; }
-.del-act:hover { background: #FCEBEB; color: #791F1F; }
-.notes-section { margin-top: 1.25rem; }
-.notes-label { font-size: 13px; font-weight: 500; color: var(--text-secondary); margin-bottom: 6px; }
-.notes-box { width: 100%; font-size: 13px; padding: 8px 10px; border-radius: var(--radius-md); border: 0.5px solid var(--border-mid); background: var(--bg-primary); color: var(--text-primary); resize: vertical; min-height: 60px; font-family: inherit; line-height: 1.5; }
-.comp-log { display: flex; flex-direction: column; gap: 5px; margin-top: .5rem; }
-.log-item { display: flex; align-items: center; gap: 10px; padding: .45rem .75rem; background: var(--bg-secondary); border-radius: var(--radius-md); }
-.log-date { font-size: 12px; color: var(--text-secondary); min-width: 72px; }
-.log-name { font-size: 13px; color: var(--text-primary); flex: 1; }
-.lot-yes { background: #EAF3DE; color: #27500A; padding: 2px 8px; border-radius: 99px; font-size: 11px; font-weight: 500; }
-.lot-no { background: #FCEBEB; color: #791F1F; padding: 2px 8px; border-radius: 99px; font-size: 11px; font-weight: 500; }
-.q-view { display: flex; flex-direction: column; gap: 16px; }
-.q-block { background: var(--bg-primary); border: 0.5px solid var(--border-light); border-radius: var(--radius-lg); overflow: hidden; }
-.q-bh { padding: .75rem 1.25rem; background: var(--bg-secondary); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; }
-.q-bt { font-size: 14px; font-weight: 500; color: var(--text-primary); }
-.q-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-.q-table th { font-size: 12px; font-weight: 500; color: var(--text-secondary); padding: 7px 1rem; text-align: left; border-bottom: 0.5px solid var(--border-light); }
-.q-table td { font-size: 13px; color: var(--text-primary); padding: 7px 1rem; border-bottom: 0.5px solid var(--border-light); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.q-table tr:last-child td { border-bottom: none; }
-.q-table tr:hover td { background: var(--bg-secondary); }
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.4); display: flex; align-items: center; justify-content: center; z-index: 99; }
-.modal { background: var(--bg-primary); border-radius: var(--radius-lg); padding: 1.5rem; width: 340px; border: 0.5px solid var(--border-mid); max-height: 90vh; overflow-y: auto; }
-.modal h3 { font-size: 16px; font-weight: 500; margin-bottom: 1rem; color: var(--text-primary); }
-.modal p { font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; }
-.modal input, .modal select, .modal textarea { width: 100%; margin-bottom: 10px; font-size: 13px; padding: 7px 10px; border-radius: var(--radius-md); border: 0.5px solid var(--border-mid); background: var(--bg-primary); color: var(--text-primary); font-family: inherit; }
-.modal label { font-size: 12px; color: var(--text-secondary); display: block; margin-bottom: 3px; }
-.modal-btns { display: flex; gap: 8px; justify-content: flex-end; margin-top: 6px; }
-.btn-cancel { padding: 6px 14px; font-size: 13px; border: 0.5px solid var(--border-mid); border-radius: var(--radius-md); cursor: pointer; background: transparent; color: var(--text-secondary); }
-.btn-save { padding: 6px 14px; font-size: 13px; border: none; border-radius: var(--radius-md); cursor: pointer; background: var(--text-primary); color: var(--bg-primary); }
-.empty { color: var(--text-secondary); font-size: 13px; padding: 1rem; text-align: center; }
-.section-lbl { font-size: 12px; font-weight: 500; color: var(--text-secondary); margin: 1rem 0 .5rem; }
+:root{--bg-primary:#ffffff;--bg-secondary:#f5f5f3;--bg-tertiary:#efefed;--text-primary:#1a1a18;--text-secondary:#6b6b67;--border-light:rgba(0,0,0,0.1);--border-mid:rgba(0,0,0,0.18);--radius-md:8px;--radius-lg:12px;--blue:#3266ad;--green:#639922;--amber:#EF9F27;--red:#E24B4A;--purple:#534AB7}
+@media(prefers-color-scheme:dark){:root{--bg-primary:#1c1c1a;--bg-secondary:#252523;--bg-tertiary:#2e2e2c;--text-primary:#e8e8e4;--text-secondary:#9a9a94;--border-light:rgba(255,255,255,0.1);--border-mid:rgba(255,255,255,0.18)}}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg-tertiary);color:var(--text-primary);min-height:100vh}
+.app{max-width:1100px;margin:0 auto;padding:1.5rem 1rem 3rem}
+.top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:10px}
+.app-title{font-size:20px;font-weight:500;color:var(--text-primary)}
+.sync-status{font-size:12px;color:var(--text-secondary);display:flex;align-items:center;gap:6px}
+.sync-dot{width:7px;height:7px;border-radius:50%;background:#b4b2a9;flex-shrink:0;transition:background .3s}
+.sync-dot.ok{background:var(--green)}.sync-dot.saving{background:var(--amber)}.sync-dot.error{background:var(--red)}
+.tabs{display:flex;gap:4px;flex-wrap:wrap}
+.tab{padding:6px 14px;font-size:13px;border:0.5px solid var(--border-light);border-radius:var(--radius-md);cursor:pointer;background:transparent;color:var(--text-secondary);transition:all .15s}
+.tab:hover{background:var(--bg-secondary);color:var(--text-primary)}
+.tab.active{background:var(--text-primary);color:var(--bg-primary);border-color:transparent}
+.btn{padding:6px 14px;font-size:13px;border:0.5px solid var(--border-mid);border-radius:var(--radius-md);cursor:pointer;background:transparent;color:var(--text-primary);transition:background .15s}
+.btn:hover{background:var(--bg-secondary)}
+.controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.view{display:none}.view.active{display:block}
+.loading-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4rem 1rem;gap:16px}
+.spinner{width:32px;height:32px;border:3px solid var(--border-light);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(265px,1fr));gap:12px}
+.proj-card{background:var(--bg-primary);border:0.5px solid var(--border-light);border-radius:var(--radius-lg);padding:1rem 1.25rem;cursor:pointer;transition:border-color .15s;position:relative}
+.proj-card:hover{border-color:var(--border-mid)}
+.proj-card.special{border-left:3px solid var(--purple)}
+.card-actions{position:absolute;top:10px;right:10px;display:flex;gap:4px;opacity:0;transition:opacity .15s}
+.proj-card:hover .card-actions{opacity:1}
+.ca-btn{padding:3px 8px;font-size:11px;border:0.5px solid var(--border-mid);border-radius:var(--radius-md);background:var(--bg-primary);color:var(--text-secondary);cursor:pointer}
+.ca-btn:hover{background:var(--bg-secondary);color:var(--text-primary)}
+.ca-btn.danger:hover{background:#FCEBEB;color:#791F1F}
+.proj-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;padding-right:76px}
+.proj-name{font-size:14px;font-weight:500;color:var(--text-primary);line-height:1.35}
+.proj-area-tag{font-size:11px;margin-top:3px;display:flex;gap:4px;flex-wrap:wrap}
+.global-pct{font-size:22px;font-weight:500;color:var(--text-primary);text-align:right}
+.global-lbl{font-size:10px;color:var(--text-secondary);text-align:right}
+.prog-bar{height:5px;background:var(--bg-secondary);border-radius:99px;overflow:hidden;margin-bottom:12px}
+.prog-fill{height:100%;border-radius:99px;background:var(--blue);transition:width .4s}
+.q-breakdown{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:10px}
+.q-cell{background:var(--bg-secondary);border-radius:6px;padding:5px 4px;text-align:center}
+.q-cell-lbl{font-size:10px;font-weight:500;color:var(--text-secondary);margin-bottom:2px}
+.q-cell-pct{font-size:13px;font-weight:500;color:var(--text-primary)}
+.q-mini-bar{height:3px;background:var(--border-light);border-radius:99px;overflow:hidden;margin-top:3px}
+.q-mini-fill{height:100%;border-radius:99px}
+.qf-0{background:#b4b2a9}.qf-low{background:var(--amber)}.qf-mid{background:var(--blue)}.qf-high{background:var(--green)}
+.proj-meta{font-size:12px;color:var(--text-secondary);display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.badge{display:inline-block;padding:2px 7px;border-radius:99px;font-size:11px;font-weight:500;white-space:nowrap}
+.b-pending{background:#E6F1FB;color:#0C447C}.b-inprogress{background:#FAEEDA;color:#633806}
+.b-delayed{background:#FCEBEB;color:#791F1F}.b-done{background:#EAF3DE;color:#27500A}
+.b-area{background:#EEEDFE;color:#3C3489}.b-special{background:#EEEDFE;color:#3C3489;border:0.5px solid #AFA9EC}
+.b-hito{background:#FAEEDA;color:#633806;border:0.5px solid #FAC775}
+.hito-star{font-size:14px;cursor:pointer;line-height:1;flex-shrink:0;opacity:.35;transition:opacity .15s;user-select:none}
+.hito-star:hover{opacity:.7}
+.hito-star.on{opacity:1}
+.gerencia-proj{background:var(--bg-primary);border:0.5px solid var(--border-light);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:12px}
+.gerencia-proj-header{padding:.85rem 1.25rem;background:var(--bg-secondary);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.gerencia-proj-name{font-size:14px;font-weight:500;color:var(--text-primary)}
+.gerencia-pcts{display:flex;gap:12px;align-items:center}
+.gpct-item{text-align:center}
+.gpct-val{font-size:16px;font-weight:500;color:var(--text-primary)}
+.gpct-lbl{font-size:10px;color:var(--text-secondary)}
+.gerencia-table{width:100%;border-collapse:collapse;table-layout:fixed}
+.gerencia-table th{font-size:12px;font-weight:500;color:var(--text-secondary);padding:7px 1rem;text-align:left;border-bottom:0.5px solid var(--border-light)}
+.gerencia-table td{font-size:13px;color:var(--text-primary);padding:8px 1rem;border-bottom:0.5px solid var(--border-light);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gerencia-table tr:last-child td{border-bottom:none}
+.btn-gerencia-on{background:var(--text-primary);color:var(--bg-primary);border-color:transparent}
+.panel{margin-top:1.5rem;background:var(--bg-primary);border:0.5px solid var(--border-light);border-radius:var(--radius-lg);overflow:hidden}
+.panel-header{padding:.75rem 1.25rem;border-bottom:0.5px solid var(--border-light);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.panel-title{font-size:14px;font-weight:500;color:var(--text-primary);display:flex;align-items:center;gap:8px}
+.udot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.urg-item{display:flex;align-items:center;gap:12px;padding:.65rem 1.25rem;border-bottom:0.5px solid var(--border-light);cursor:pointer;transition:background .12s}
+.urg-item:last-child{border-bottom:none}.urg-item:hover{background:var(--bg-secondary)}
+.urg-rank{font-size:12px;font-weight:500;color:var(--text-secondary);min-width:18px;text-align:center}
+.urg-bar{width:4px;border-radius:99px;align-self:stretch;flex-shrink:0;min-height:32px}
+.bar-ov,.bar-cr{background:var(--red)}.bar-wa{background:var(--amber)}.bar-so{background:var(--blue)}
+.urg-main{flex:1;min-width:0}
+.urg-aname{font-size:13px;font-weight:500;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.urg-pname{font-size:11px;color:var(--text-secondary);margin-top:1px}
+.urg-right{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0}
+.urg-days{font-size:13px;font-weight:500}.urg-date{font-size:11px;color:var(--text-secondary)}
+.tc-ov{color:#A32D2D}.tc-cr{color:var(--red)}.tc-wa{color:#BA7517}.tc-so{color:var(--blue)}
+.metrics-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border-light)}
+.metric-cell{background:var(--bg-primary);padding:.75rem 1rem;text-align:center}
+.mc-val{font-size:20px;font-weight:500;color:var(--text-primary)}
+.mc-lbl{font-size:11px;color:var(--text-secondary);margin-top:2px}
+.chart-wrap{padding:1rem 1.25rem 1.25rem}
+.legend-row{display:flex;gap:16px;margin-bottom:10px;font-size:12px;color:var(--text-secondary)}
+.legend-row span{display:flex;align-items:center;gap:4px}
+.legend-swatch{width:10px;height:10px;border-radius:2px;display:inline-block}
+.detail-view{background:var(--bg-primary);border:0.5px solid var(--border-light);border-radius:var(--radius-lg);padding:1.25rem}
+.back-btn{font-size:13px;color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;gap:4px;margin-bottom:1rem;background:none;border:none}
+.back-btn:hover{color:var(--text-primary)}
+.det-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.75rem;flex-wrap:wrap;gap:8px}
+.det-title{font-size:18px;font-weight:500;color:var(--text-primary)}
+.det-q-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:1rem}
+.det-q-card{background:var(--bg-secondary);border-radius:var(--radius-md);padding:.6rem .75rem}
+.det-q-label{font-size:11px;font-weight:500;color:var(--text-secondary);margin-bottom:4px}
+.det-q-pct{font-size:18px;font-weight:500;color:var(--text-primary)}
+.det-q-sub{font-size:11px;color:var(--text-secondary);margin-top:2px}
+.det-q-bar2{height:4px;background:var(--border-light);border-radius:99px;overflow:hidden;margin-top:5px}
+.det-q-fill{height:100%;border-radius:99px;background:var(--blue)}
+.area-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px;margin-bottom:1rem}
+.area-card{background:var(--bg-secondary);border-radius:var(--radius-md);padding:.75rem 1rem}
+.area-name{font-size:13px;font-weight:500;color:var(--text-primary);margin-bottom:4px}
+.area-pct{font-size:20px;font-weight:500;color:var(--text-primary)}
+.area-bar{height:4px;background:var(--border-light);border-radius:99px;overflow:hidden;margin-top:5px}
+.area-fill{height:100%;border-radius:99px;background:var(--purple)}
+.act-list{display:flex;flex-direction:column;gap:7px}
+.act-item{background:var(--bg-secondary);border-radius:var(--radius-md);padding:.65rem 1rem;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.act-name{flex:1;font-size:13px;color:var(--text-primary);min-width:100px}
+select.act-sel{font-size:12px;padding:3px 6px;border-radius:var(--radius-md);border:0.5px solid var(--border-mid);background:var(--bg-primary);color:var(--text-primary);cursor:pointer}
+input.act-date{font-size:12px;padding:3px 6px;border-radius:var(--radius-md);border:0.5px solid var(--border-mid);background:var(--bg-primary);color:var(--text-primary)}
+.del-act{padding:2px 7px;font-size:12px;border:0.5px solid var(--border-mid);border-radius:var(--radius-md);background:transparent;color:var(--text-secondary);cursor:pointer}
+.del-act:hover{background:#FCEBEB;color:#791F1F}
+.notes-section{margin-top:1.25rem}
+.notes-label{font-size:13px;font-weight:500;color:var(--text-secondary);margin-bottom:6px}
+.notes-box{width:100%;font-size:13px;padding:8px 10px;border-radius:var(--radius-md);border:0.5px solid var(--border-mid);background:var(--bg-primary);color:var(--text-primary);resize:vertical;min-height:60px;font-family:inherit;line-height:1.5}
+.comp-log{display:flex;flex-direction:column;gap:5px;margin-top:.5rem}
+.log-item{display:flex;align-items:center;gap:10px;padding:.45rem .75rem;background:var(--bg-secondary);border-radius:var(--radius-md)}
+.log-date{font-size:12px;color:var(--text-secondary);min-width:72px}
+.log-name{font-size:13px;color:var(--text-primary);flex:1}
+.lot-yes{background:#EAF3DE;color:#27500A;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:500}
+.lot-no{background:#FCEBEB;color:#791F1F;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:500}
+.q-view{display:flex;flex-direction:column;gap:16px}
+.q-block{background:var(--bg-primary);border:0.5px solid var(--border-light);border-radius:var(--radius-lg);overflow:hidden}
+.q-bh{padding:.75rem 1.25rem;background:var(--bg-secondary);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px}
+.q-bt{font-size:14px;font-weight:500;color:var(--text-primary)}
+.q-table{width:100%;border-collapse:collapse;table-layout:fixed}
+.q-table th{font-size:12px;font-weight:500;color:var(--text-secondary);padding:7px 1rem;text-align:left;border-bottom:0.5px solid var(--border-light)}
+.q-table td{font-size:13px;color:var(--text-primary);padding:7px 1rem;border-bottom:0.5px solid var(--border-light);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.q-table tr:last-child td{border-bottom:none}.q-table tr:hover td{background:var(--bg-secondary)}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;z-index:99}
+.modal{background:var(--bg-primary);border-radius:var(--radius-lg);padding:1.5rem;width:340px;border:0.5px solid var(--border-mid);max-height:90vh;overflow-y:auto}
+.modal h3{font-size:16px;font-weight:500;margin-bottom:1rem;color:var(--text-primary)}
+.modal p{font-size:13px;color:var(--text-secondary);margin-bottom:12px}
+.modal input,.modal select,.modal textarea{width:100%;margin-bottom:10px;font-size:13px;padding:7px 10px;border-radius:var(--radius-md);border:0.5px solid var(--border-mid);background:var(--bg-primary);color:var(--text-primary);font-family:inherit}
+.modal label{font-size:12px;color:var(--text-secondary);display:block;margin-bottom:3px}
+.modal-btns{display:flex;gap:8px;justify-content:flex-end;margin-top:6px}
+.btn-cancel{padding:6px 14px;font-size:13px;border:0.5px solid var(--border-mid);border-radius:var(--radius-md);cursor:pointer;background:transparent;color:var(--text-secondary)}
+.btn-save{padding:6px 14px;font-size:13px;border:none;border-radius:var(--radius-md);cursor:pointer;background:var(--text-primary);color:var(--bg-primary)}
+.empty{color:var(--text-secondary);font-size:13px;padding:1rem;text-align:center}
+.section-lbl{font-size:12px;font-weight:500;color:var(--text-secondary);margin:1rem 0 .5rem}
 </style>
 </head>
 <body>
 <div class="app">
-
 <div class="top-bar">
-  <span class="app-title">Proyectos 2025</span>
+  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+    <span class="app-title">Proyectos 2025</span>
+    <div class="sync-status"><div class="sync-dot" id="sync-dot"></div><span id="sync-label">Conectando...</span></div>
+  </div>
   <div class="controls">
     <div class="tabs">
       <button class="tab active" onclick="switchView('overview')">Proyectos</button>
@@ -172,33 +164,37 @@ input.act-date { font-size: 12px; padding: 3px 6px; border-radius: var(--radius-
       <button class="tab" onclick="switchView('q3')">Q3</button>
       <button class="tab" onclick="switchView('q4')">Q4</button>
     </div>
+    <button class="btn" id="toggle-gerencia" onclick="toggleGerencia()">Vista gerencia</button>
     <button class="btn" onclick="openModal('modal-project')">+ Nuevo proyecto</button>
   </div>
 </div>
 
 <div id="view-overview" class="view active">
-  <div class="projects-grid" id="projects-grid"></div>
-
-  <div class="panel" id="urgency-panel"></div>
-
-  <div class="panel" style="margin-top:1.5rem">
-    <div class="panel-header">
-      <span class="panel-title">Indicador de cumplimiento</span>
-      <span style="font-size:12px;color:var(--text-secondary)">completadas vs fecha planeada</span>
-    </div>
-    <div class="metrics-row">
-      <div class="metric-cell"><div class="mc-val" id="cm-total">0</div><div class="mc-lbl">completadas</div></div>
-      <div class="metric-cell"><div class="mc-val" id="cm-ontime" style="color:#639922">—</div><div class="mc-lbl">a tiempo</div></div>
-      <div class="metric-cell"><div class="mc-val" id="cm-late" style="color:#E24B4A">—</div><div class="mc-lbl">con retraso</div></div>
-      <div class="metric-cell"><div class="mc-val" id="cm-streak">—</div><div class="mc-lbl">racha actual</div><div style="font-size:11px;color:var(--text-secondary)" id="cm-streak-lbl"></div></div>
-    </div>
-    <div class="chart-wrap">
-      <div class="legend-row">
-        <span><span class="legend-swatch" style="background:#639922"></span>A tiempo</span>
-        <span><span class="legend-swatch" style="background:#E24B4A"></span>Con retraso</span>
+  <div id="main-loading" class="loading-screen"><div class="spinner"></div><span style="font-size:13px;color:var(--text-secondary)">Cargando datos...</span></div>
+  <div id="overview-content" style="display:none">
+    <div class="projects-grid" id="projects-grid"></div>
+    <div class="panel" id="urgency-panel"></div>
+    <div id="gerencia-view" style="display:none;margin-top:1.5rem">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:1rem;flex-wrap:wrap">
+        <span style="font-size:15px;font-weight:500;color:var(--text-primary)">Vista gerencia — hitos estratégicos</span>
+        <select id="gerencia-q-filter" onchange="renderGerencia()" style="font-size:12px;padding:4px 8px;border-radius:var(--radius-md);border:0.5px solid var(--border-mid);background:var(--bg-primary);color:var(--text-primary)">
+          <option value="all">Todos los trimestres</option>
+          <option value="Q1">Q1</option><option value="Q2">Q2</option><option value="Q3">Q3</option><option value="Q4">Q4</option>
+        </select>
       </div>
-      <div style="position:relative;width:100%;height:180px">
-        <canvas id="compliance-chart" role="img" aria-label="Tendencia de cumplimiento semanal">Tendencia de cumplimiento semanal.</canvas>
+      <div id="gerencia-content"></div>
+    </div>
+    <div class="panel" style="margin-top:1.5rem">
+      <div class="panel-header"><span class="panel-title">Indicador de cumplimiento</span><span style="font-size:12px;color:var(--text-secondary)">completadas vs fecha planeada</span></div>
+      <div class="metrics-row">
+        <div class="metric-cell"><div class="mc-val" id="cm-total">0</div><div class="mc-lbl">completadas</div></div>
+        <div class="metric-cell"><div class="mc-val" id="cm-ontime" style="color:#639922">—</div><div class="mc-lbl">a tiempo</div></div>
+        <div class="metric-cell"><div class="mc-val" id="cm-late" style="color:#E24B4A">—</div><div class="mc-lbl">con retraso</div></div>
+        <div class="metric-cell"><div class="mc-val" id="cm-streak">—</div><div class="mc-lbl">racha actual</div><div style="font-size:11px;color:var(--text-secondary)" id="cm-streak-lbl"></div></div>
+      </div>
+      <div class="chart-wrap">
+        <div class="legend-row"><span><span class="legend-swatch" style="background:#639922"></span>A tiempo</span><span><span class="legend-swatch" style="background:#E24B4A"></span>Con retraso</span></div>
+        <div style="position:relative;width:100%;height:180px"><canvas id="compliance-chart" role="img" aria-label="Tendencia de cumplimiento semanal">Tendencia semanal.</canvas></div>
       </div>
     </div>
   </div>
@@ -208,416 +204,335 @@ input.act-date { font-size: 12px; padding: 3px 6px; border-radius: var(--radius-
   <div class="detail-view">
     <button class="back-btn" onclick="backToOverview()">← Volver</button>
     <div class="det-header">
-      <div>
-        <div class="det-title" id="det-title"></div>
-        <div id="det-area" style="font-size:12px;color:var(--text-secondary);margin-top:3px"></div>
-      </div>
+      <div><div class="det-title" id="det-title"></div><div id="det-area" style="font-size:12px;color:var(--text-secondary);margin-top:3px"></div></div>
       <button class="btn" onclick="openActivityModal()">+ Actividad</button>
     </div>
     <div id="area-breakdown-section"></div>
     <div class="det-q-bar" id="det-q-bar"></div>
     <div class="act-list" id="act-list"></div>
-    <div class="notes-section">
-      <div class="notes-label">Novedades / Notas</div>
-      <textarea class="notes-box" id="notes-box" placeholder="Registra novedades, bloqueos o comentarios..." oninput="saveNotes()"></textarea>
-    </div>
-    <div style="margin-top:1.25rem">
-      <div class="notes-label">Registro de cumplimiento</div>
-      <div class="comp-log" id="proj-comp-log"></div>
-    </div>
+    <div class="notes-section"><div class="notes-label">Novedades / Notas</div><textarea class="notes-box" id="notes-box" placeholder="Registra novedades, bloqueos o comentarios..." oninput="saveNotes()"></textarea></div>
+    <div style="margin-top:1.25rem"><div class="notes-label">Registro de cumplimiento</div><div class="comp-log" id="proj-comp-log"></div></div>
   </div>
 </div>
-
 <div id="view-q1" class="view"><div class="q-view" id="q1-view"></div></div>
 <div id="view-q2" class="view"><div class="q-view" id="q2-view"></div></div>
 <div id="view-q3" class="view"><div class="q-view" id="q3-view"></div></div>
 <div id="view-q4" class="view"><div class="q-view" id="q4-view"></div></div>
-
 </div>
 
-<!-- Modal nuevo proyecto -->
-<div id="modal-project" class="modal-overlay" style="display:none">
-<div class="modal">
+<div id="modal-subareas" class="modal-overlay" style="display:none"><div class="modal">
+  <h3>Áreas de seguimiento</h3>
+  <p>Edita los nombres o agrega nuevas áreas. Al renombrar, las actividades se actualizan automáticamente.</p>
+  <div id="subarea-edit-list"></div>
+  <button onclick="addSubareaRow()" style="width:100%;padding:7px;font-size:13px;border:0.5px dashed var(--border-mid);border-radius:var(--radius-md);background:transparent;color:var(--text-secondary);cursor:pointer;margin-bottom:10px">+ Agregar área</button>
+  <div class="modal-btns"><button class="btn-cancel" onclick="closeModal('modal-subareas')">Cancelar</button><button class="btn-save" onclick="saveSubareas()">Guardar</button></div>
+</div></div>
+
+<div id="modal-project" class="modal-overlay" style="display:none"><div class="modal">
   <h3>Nuevo proyecto</h3>
   <input id="np-name" placeholder="Nombre del proyecto" />
   <label>Área</label>
-  <select id="np-area">
-    <option value="">Sin área</option>
-    <option>Formación</option><option>HRBP</option><option>LMS</option><option>E-Learning</option><option>Onboarding</option>
-  </select>
+  <select id="np-area"><option value="">Sin área</option><option>Formación</option><option>HRBP</option><option>LMS</option><option>E-Learning</option><option>Onboarding</option></select>
   <label>Sub-áreas para seguimiento individual (separadas por coma)</label>
   <input id="np-subareas" placeholder="Ej: Área 1, Área 2, Área 3" />
-  <div class="modal-btns">
-    <button class="btn-cancel" onclick="closeModal('modal-project')">Cancelar</button>
-    <button class="btn-save" onclick="saveProject()">Guardar</button>
-  </div>
-</div>
-</div>
+  <div class="modal-btns"><button class="btn-cancel" onclick="closeModal('modal-project')">Cancelar</button><button class="btn-save" onclick="saveProject()">Guardar</button></div>
+</div></div>
 
-<!-- Modal duplicar -->
-<div id="modal-duplicate" class="modal-overlay" style="display:none">
-<div class="modal">
-  <h3>Duplicar proyecto</h3>
-  <p>Las actividades se copian en estado pendiente.</p>
+<div id="modal-duplicate" class="modal-overlay" style="display:none"><div class="modal">
+  <h3>Duplicar proyecto</h3><p>Las actividades se copian en estado pendiente.</p>
   <input id="dup-name" placeholder="Nombre del nuevo proyecto" />
   <select id="dup-area"><option value="">Sin área</option><option>Formación</option><option>HRBP</option><option>LMS</option><option>E-Learning</option><option>Onboarding</option></select>
-  <div class="modal-btns">
-    <button class="btn-cancel" onclick="closeModal('modal-duplicate')">Cancelar</button>
-    <button class="btn-save" onclick="confirmDuplicate()">Duplicar</button>
-  </div>
-</div>
-</div>
+  <div class="modal-btns"><button class="btn-cancel" onclick="closeModal('modal-duplicate')">Cancelar</button><button class="btn-save" onclick="confirmDuplicate()">Duplicar</button></div>
+</div></div>
 
-<!-- Modal actividad -->
-<div id="modal-activity" class="modal-overlay" style="display:none">
-<div class="modal">
+<div id="modal-activity" class="modal-overlay" style="display:none"><div class="modal">
   <h3>Nueva actividad</h3>
   <input id="na-name" placeholder="Nombre de la actividad" />
-  <select id="na-status">
-    <option value="pending">Pendiente</option>
-    <option value="inprogress">En proceso</option>
-    <option value="delayed">Con retraso</option>
-    <option value="done">Completado</option>
-  </select>
+  <select id="na-status"><option value="pending">Pendiente</option><option value="inprogress">En proceso</option><option value="delayed">Con retraso</option><option value="done">Completado</option></select>
   <input id="na-date" type="date" />
-  <select id="na-q">
-    <option value="Q1">Q1 (Ene–Mar)</option>
-    <option value="Q2">Q2 (Abr–Jun)</option>
-    <option value="Q3">Q3 (Jul–Sep)</option>
-    <option value="Q4">Q4 (Oct–Dic)</option>
-  </select>
-  <div id="na-subarea-wrap" style="display:none">
-    <label>Sub-área</label>
-    <select id="na-subarea"></select>
-  </div>
-  <div class="modal-btns">
-    <button class="btn-cancel" onclick="closeModal('modal-activity')">Cancelar</button>
-    <button class="btn-save" onclick="saveActivity()">Guardar</button>
-  </div>
-</div>
-</div>
+  <select id="na-q"><option value="Q1">Q1 (Ene–Mar)</option><option value="Q2">Q2 (Abr–Jun)</option><option value="Q3">Q3 (Jul–Sep)</option><option value="Q4">Q4 (Oct–Dic)</option></select>
+  <div id="na-subarea-wrap" style="display:none"><label>Sub-área</label><select id="na-subarea"></select></div>
+  <div class="modal-btns"><button class="btn-cancel" onclick="closeModal('modal-activity')">Cancelar</button><button class="btn-save" onclick="saveActivity()">Guardar</button></div>
+</div></div>
 
 <script>
-const STATUSES = { pending:'Pendiente', inprogress:'En proceso', delayed:'Con retraso', done:'Completado' };
-const BADGE = { pending:'b-pending', inprogress:'b-inprogress', delayed:'b-delayed', done:'b-done' };
-const QS = ['Q1','Q2','Q3','Q4'];
-const TODAY = new Date(); TODAY.setHours(0,0,0,0);
+const API='https://script.google.com/macros/s/AKfycbw1BXc2uUYhMUGX2Nv-Igs6WftIEsq-KemE9wylGaGM4SF4_erO2811x4rT7TW-tyv4/exec';
+const STATUSES={pending:'Pendiente',inprogress:'En proceso',delayed:'Con retraso',done:'Completado'};
+const BADGE={pending:'b-pending',inprogress:'b-inprogress',delayed:'b-delayed',done:'b-done'};
+const QS=['Q1','Q2','Q3','Q4'];
+const TODAY=new Date();TODAY.setHours(0,0,0,0);
+let projects=[],activeProject=null,dupSourceId=null,complianceChart=null,saveTimer=null;
 
-let projects = [], activeProject = null, dupSourceId = null, complianceChart = null;
+const SEED=[{"id":"mo2zx68v93fu","name":"LevelUp","area":"Formación","subareas":[],"notes":"","activities":[{"id":"mo2zx68v2ysp","name":"Construcción malla de formación","status":"done","date":"2026-03-31","q":"Q1","subArea":"","completedDate":"2026-04-17","onTime":false},{"id":"mo2zx68v1znj","name":"Diseño de sesiones","status":"inprogress","date":"2026-05-01","q":"Q2","subArea":"","completedDate":null,"onTime":null},{"id":"mo2zx68vzoe9","name":"Agendamiento sesiones de formación","status":"inprogress","date":"2026-05-01","q":"Q2","subArea":"","completedDate":null,"onTime":null},{"id":"mo2zx68v5sm2","name":"Lanzamiento","status":"pending","date":"2026-05-01","q":"Q2","subArea":"","completedDate":null,"onTime":null},{"id":"mo2zx68vtwut","name":"Consolidar inscritos","status":"inprogress","date":"2026-04-22","q":"Q2","subArea":"","completedDate":null,"onTime":null},{"id":"mo2zx68vgj2w","name":"Definición de proyectos","status":"pending","date":"2026-06-08","q":"Q2","subArea":"","completedDate":null,"onTime":null},{"id":"mo2zx68v98p3","name":"Graduación","status":"pending","date":"2026-08-28","q":"Q4","subArea":"","completedDate":null,"onTime":null}]},{"id":"mo2zx68vxy1n","name":"Plan formación 2026","area":"Formación","subareas":["Área 1","Área 2","Área 3","Área 4"],"notes":"","activities":[{"id":"mo30ayz6bsz3","name":"Diagnóstico de formaciones","status":"done","date":"2026-04-17","q":"Q1","subArea":"","completedDate":null,"onTime":null}]},{"id":"mo2zx68v7208","name":"Plan formación HACCP","area":"Formación","subareas":[],"notes":"","activities":[{"id":"mo2zx68vnt50","name":"Diagnóstico de necesidades","status":"done","date":"2026-04-17","q":"Q1","subArea":"","completedDate":"2026-04-17","onTime":true},{"id":"mo2zx68vt5jk","name":"Diseño del plan","status":"done","date":"2026-04-17","q":"Q1","subArea":"","completedDate":"2026-04-17","onTime":true}]},{"id":"mo2zx68vmirb","name":"Intervención PVO","area":"Formación","subareas":[],"notes":"","activities":[{"id":"mo2zx68vnnrd","name":"Taller conexión PVO","status":"pending","date":"2026-06-15","q":"Q2","subArea":"","completedDate":null,"onTime":null},{"id":"mo2zx68v32ym","name":"Taller conexión líderes de área","status":"pending","date":"2026-06-15","q":"Q2","subArea":"","completedDate":null,"onTime":null},{"id":"mo30cy4rzzad","name":"Construcción plan de re-entrenamiento","status":"done","date":"2026-04-17","q":"Q1","subArea":"","completedDate":null,"onTime":null}]},{"id":"mo2zx68v4arl","name":"HRBP Desarrollo de clientes","area":"HRBP","subareas":["Desarrollo de clientes"],"notes":"","activities":[{"id":"mo2zx68vohmy","name":"PDI de área Q1","status":"pending","date":"","q":"Q1","subArea":"Desarrollo de clientes","completedDate":null,"onTime":null},{"id":"mo2zx68vcmu8","name":"PDI de área Q2","status":"pending","date":"","q":"Q2","subArea":"Desarrollo de clientes","completedDate":null,"onTime":null},{"id":"mo2zx68vvhrg","name":"PDI de área Q3","status":"pending","date":"","q":"Q3","subArea":"Desarrollo de clientes","completedDate":null,"onTime":null},{"id":"mo2zx68vvrum","name":"PDI de área Q4","status":"pending","date":"","q":"Q4","subArea":"Desarrollo de clientes","completedDate":null,"onTime":null},{"id":"mo2zx68vpisz","name":"Cumpleaños Q1","status":"pending","date":"","q":"Q1","subArea":"Desarrollo de clientes","completedDate":null,"onTime":null},{"id":"mo2zx68vt0vn","name":"Cumpleaños Q2","status":"pending","date":"","q":"Q2","subArea":"Desarrollo de clientes","completedDate":null,"onTime":null},{"id":"mo2zx68vse62","name":"Cumpleaños Q3","status":"pending","date":"","q":"Q3","subArea":"Desarrollo de clientes","completedDate":null,"onTime":null},{"id":"mo2zx68vw7xw","name":"Cumpleaños Q4","status":"pending","date":"","q":"Q4","subArea":"Desarrollo de clientes","completedDate":null,"onTime":null},{"id":"mo2zx68vbjqf","name":"Seguimiento PDI Q1","status":"pending","date":"","q":"Q1","subArea":"Desarrollo de clientes","completedDate":null,"onTime":null},{"id":"mo2zx68v107n","name":"Seguimiento PDI Q2","status":"pending","date":"","q":"Q2","subArea":"Desarrollo de clientes","completedDate":null,"onTime":null},{"id":"mo2zx68vyu88","name":"Seguimiento PDI Q3","status":"pending","date":"","q":"Q3","subArea":"Desarrollo de clientes","completedDate":null,"onTime":null},{"id":"mo2zx68v2ro3","name":"Seguimiento PDI Q4","status":"pending","date":"","q":"Q4","subArea":"Desarrollo de clientes","completedDate":null,"onTime":null},{"id":"mo2zx68vmti9","name":"Seguimientos Q1","status":"pending","date":"","q":"Q1","subArea":"Desarrollo de clientes","completedDate":null,"onTime":null},{"id":"mo2zx68v7xhz","name":"Seguimientos Q2","status":"pending","date":"","q":"Q2","subArea":"Desarrollo de clientes","completedDate":null,"onTime":null},{"id":"mo2zx68vqwpv","name":"Seguimientos Q3","status":"pending","date":"","q":"Q3","subArea":"Desarrollo de clientes","completedDate":null,"onTime":null},{"id":"mo2zx68vc0mp","name":"Seguimientos Q4","status":"pending","date":"","q":"Q4","subArea":"Desarrollo de clientes","completedDate":null,"onTime":null},{"id":"mo2zx68v6fm4","name":"Entrenamientos Q1","status":"pending","date":"","q":"Q1","subArea":"Desarrollo de clientes","completedDate":null,"onTime":null},{"id":"mo2zx68v068v","name":"Entrenamientos Q2","status":"pending","date":"","q":"Q2","subArea":"Desarrollo de clientes","completedDate":null,"onTime":null},{"id":"mo2zx68vhuyv","name":"Entrenamientos Q3","status":"pending","date":"","q":"Q3","subArea":"Desarrollo de clientes","completedDate":null,"onTime":null},{"id":"mo2zx68vmvko","name":"Entrenamientos Q4","status":"pending","date":"","q":"Q4","subArea":"Desarrollo de clientes","completedDate":null,"onTime":null},{"id":"mo2zx68v7m59","name":"Alineación plan desarrollo trabajo 2026","status":"pending","date":"","q":"Q1","subArea":"Desarrollo de clientes","completedDate":null,"onTime":null},{"id":"mo2zx68vuuhx","name":"Encuesta favorabilidad / Feedback","status":"pending","date":"","q":"Q4","subArea":"Desarrollo de clientes","completedDate":null,"onTime":null}]},{"id":"mo2zx68vp2wl","name":"HRBP Gestión estratégica","area":"HRBP","subareas":["Gestión estratégica"],"notes":"","activities":[{"id":"mo2zx68vzlm8","name":"PDI de área Q1","status":"pending","date":"","q":"Q1","subArea":"Gestión estratégica","completedDate":null,"onTime":null},{"id":"mo2zx68v6gqn","name":"PDI de área Q2","status":"pending","date":"","q":"Q2","subArea":"Gestión estratégica","completedDate":null,"onTime":null},{"id":"mo2zx68vgbwh","name":"PDI de área Q3","status":"pending","date":"","q":"Q3","subArea":"Gestión estratégica","completedDate":null,"onTime":null},{"id":"mo2zx68vbdb6","name":"PDI de área Q4","status":"pending","date":"","q":"Q4","subArea":"Gestión estratégica","completedDate":null,"onTime":null},{"id":"mo2zx68vmu39","name":"Cumpleaños Q1","status":"pending","date":"","q":"Q1","subArea":"Gestión estratégica","completedDate":null,"onTime":null},{"id":"mo2zx68v78pf","name":"Cumpleaños Q2","status":"pending","date":"","q":"Q2","subArea":"Gestión estratégica","completedDate":null,"onTime":null},{"id":"mo2zx68vgn6j","name":"Cumpleaños Q3","status":"pending","date":"","q":"Q3","subArea":"Gestión estratégica","completedDate":null,"onTime":null},{"id":"mo2zx68valq9","name":"Cumpleaños Q4","status":"pending","date":"","q":"Q4","subArea":"Gestión estratégica","completedDate":null,"onTime":null},{"id":"mo2zx68vekc4","name":"Seguimiento PDI Q1","status":"pending","date":"","q":"Q1","subArea":"Gestión estratégica","completedDate":null,"onTime":null},{"id":"mo2zx68v1454","name":"Seguimiento PDI Q2","status":"pending","date":"","q":"Q2","subArea":"Gestión estratégica","completedDate":null,"onTime":null},{"id":"mo2zx68vg714","name":"Seguimiento PDI Q3","status":"pending","date":"","q":"Q3","subArea":"Gestión estratégica","completedDate":null,"onTime":null},{"id":"mo2zx68vsuht","name":"Seguimiento PDI Q4","status":"pending","date":"","q":"Q4","subArea":"Gestión estratégica","completedDate":null,"onTime":null},{"id":"mo2zx68viafm","name":"Seguimientos Q1","status":"pending","date":"","q":"Q1","subArea":"Gestión estratégica","completedDate":null,"onTime":null},{"id":"mo2zx68vl2af","name":"Seguimientos Q2","status":"pending","date":"","q":"Q2","subArea":"Gestión estratégica","completedDate":null,"onTime":null},{"id":"mo2zx68vql7c","name":"Seguimientos Q3","status":"pending","date":"","q":"Q3","subArea":"Gestión estratégica","completedDate":null,"onTime":null},{"id":"mo2zx68v6ax4","name":"Seguimientos Q4","status":"pending","date":"","q":"Q4","subArea":"Gestión estratégica","completedDate":null,"onTime":null},{"id":"mo2zx68vrsit","name":"Entrenamientos Q1","status":"pending","date":"","q":"Q1","subArea":"Gestión estratégica","completedDate":null,"onTime":null},{"id":"mo2zx68v4ux1","name":"Entrenamientos Q2","status":"pending","date":"","q":"Q2","subArea":"Gestión estratégica","completedDate":null,"onTime":null},{"id":"mo2zx68v17j3","name":"Entrenamientos Q3","status":"pending","date":"","q":"Q3","subArea":"Gestión estratégica","completedDate":null,"onTime":null},{"id":"mo2zx68vwgal","name":"Entrenamientos Q4","status":"pending","date":"","q":"Q4","subArea":"Gestión estratégica","completedDate":null,"onTime":null},{"id":"mo2zx68vdk4o","name":"Alineación plan desarrollo trabajo 2026","status":"pending","date":"","q":"Q1","subArea":"Gestión estratégica","completedDate":null,"onTime":null},{"id":"mo2zx68v18sj","name":"Encuesta favorabilidad / Feedback","status":"pending","date":"","q":"Q4","subArea":"Gestión estratégica","completedDate":null,"onTime":null}]},{"id":"mo2zx68viysa","name":"HRBP Desarrollo talento humano","area":"HRBP","subareas":["Desarrollo talento humano"],"notes":"","activities":[{"id":"mo2zx68vomhq","name":"PDI de área Q1","status":"pending","date":"","q":"Q1","subArea":"Desarrollo talento humano","completedDate":null,"onTime":null},{"id":"mo2zx68ve6tt","name":"PDI de área Q2","status":"pending","date":"","q":"Q2","subArea":"Desarrollo talento humano","completedDate":null,"onTime":null},{"id":"mo2zx68vzd9l","name":"PDI de área Q3","status":"pending","date":"","q":"Q3","subArea":"Desarrollo talento humano","completedDate":null,"onTime":null},{"id":"mo2zx68vqafc","name":"PDI de área Q4","status":"pending","date":"","q":"Q4","subArea":"Desarrollo talento humano","completedDate":null,"onTime":null},{"id":"mo2zx68vdabb","name":"Cumpleaños Q1","status":"pending","date":"","q":"Q1","subArea":"Desarrollo talento humano","completedDate":null,"onTime":null},{"id":"mo2zx68vemxy","name":"Cumpleaños Q2","status":"pending","date":"","q":"Q2","subArea":"Desarrollo talento humano","completedDate":null,"onTime":null},{"id":"mo2zx68vuuql","name":"Cumpleaños Q3","status":"pending","date":"","q":"Q3","subArea":"Desarrollo talento humano","completedDate":null,"onTime":null},{"id":"mo2zx68v6yw5","name":"Cumpleaños Q4","status":"pending","date":"","q":"Q4","subArea":"Desarrollo talento humano","completedDate":null,"onTime":null},{"id":"mo2zx68v4gyr","name":"Seguimiento PDI Q1","status":"pending","date":"","q":"Q1","subArea":"Desarrollo talento humano","completedDate":null,"onTime":null},{"id":"mo2zx68vem7q","name":"Seguimiento PDI Q2","status":"pending","date":"","q":"Q2","subArea":"Desarrollo talento humano","completedDate":null,"onTime":null},{"id":"mo2zx68vb9cs","name":"Seguimiento PDI Q3","status":"pending","date":"","q":"Q3","subArea":"Desarrollo talento humano","completedDate":null,"onTime":null},{"id":"mo2zx68v7fts","name":"Seguimiento PDI Q4","status":"pending","date":"","q":"Q4","subArea":"Desarrollo talento humano","completedDate":null,"onTime":null},{"id":"mo2zx68vpgbl","name":"Seguimientos Q1","status":"pending","date":"","q":"Q1","subArea":"Desarrollo talento humano","completedDate":null,"onTime":null},{"id":"mo2zx68v4f6e","name":"Seguimientos Q2","status":"pending","date":"","q":"Q2","subArea":"Desarrollo talento humano","completedDate":null,"onTime":null},{"id":"mo2zx68vb8tv","name":"Seguimientos Q3","status":"pending","date":"","q":"Q3","subArea":"Desarrollo talento humano","completedDate":null,"onTime":null},{"id":"mo2zx68v0isn","name":"Seguimientos Q4","status":"pending","date":"","q":"Q4","subArea":"Desarrollo talento humano","completedDate":null,"onTime":null},{"id":"mo2zx68vwapa","name":"Entrenamientos Q1","status":"pending","date":"","q":"Q1","subArea":"Desarrollo talento humano","completedDate":null,"onTime":null},{"id":"mo2zx68vk79o","name":"Entrenamientos Q2","status":"pending","date":"","q":"Q2","subArea":"Desarrollo talento humano","completedDate":null,"onTime":null},{"id":"mo2zx68v0kys","name":"Entrenamientos Q3","status":"pending","date":"","q":"Q3","subArea":"Desarrollo talento humano","completedDate":null,"onTime":null},{"id":"mo2zx68vpeiu","name":"Entrenamientos Q4","status":"pending","date":"","q":"Q4","subArea":"Desarrollo talento humano","completedDate":null,"onTime":null},{"id":"mo2zx68vnslk","name":"Alineación plan desarrollo trabajo 2026","status":"pending","date":"","q":"Q1","subArea":"Desarrollo talento humano","completedDate":null,"onTime":null},{"id":"mo2zx68vevpu","name":"Encuesta favorabilidad / Feedback","status":"pending","date":"","q":"Q4","subArea":"Desarrollo talento humano","completedDate":null,"onTime":null}]},{"id":"mo2zx68vb7s3","name":"HRBP Gestión administrativa","area":"HRBP","subareas":["Gestión administrativa"],"notes":"","activities":[{"id":"mo2zx68vidqq","name":"PDI de área Q1","status":"done","date":"2026-04-13","q":"Q1","subArea":"Gestión administrativa","completedDate":"2026-04-17","onTime":true},{"id":"mo2zx68vjha2","name":"PDI de área Q2","status":"pending","date":"","q":"Q2","subArea":"Gestión administrativa","completedDate":null,"onTime":null},{"id":"mo2zx68vnqj8","name":"PDI de área Q3","status":"pending","date":"","q":"Q3","subArea":"Gestión administrativa","completedDate":null,"onTime":null},{"id":"mo2zx68vsbjm","name":"PDI de área Q4","status":"pending","date":"","q":"Q4","subArea":"Gestión administrativa","completedDate":null,"onTime":null},{"id":"mo2zx68vw532","name":"Cumpleaños Q1","status":"done","date":"2026-04-13","q":"Q1","subArea":"Gestión administrativa","completedDate":"2026-04-17","onTime":true},{"id":"mo2zx68vta7b","name":"Cumpleaños Q2","status":"pending","date":"","q":"Q2","subArea":"Gestión administrativa","completedDate":null,"onTime":null},{"id":"mo2zx68v190o","name":"Cumpleaños Q3","status":"pending","date":"","q":"Q3","subArea":"Gestión administrativa","completedDate":null,"onTime":null},{"id":"mo2zx68vat8q","name":"Cumpleaños Q4","status":"pending","date":"","q":"Q4","subArea":"Gestión administrativa","completedDate":null,"onTime":null},{"id":"mo2zx68vporm","name":"Seguimiento PDI Q1","status":"pending","date":"","q":"Q1","subArea":"Gestión administrativa","completedDate":null,"onTime":null},{"id":"mo2zx68v9jwp","name":"Seguimiento PDI Q2","status":"pending","date":"","q":"Q2","subArea":"Gestión administrativa","completedDate":null,"onTime":null},{"id":"mo2zx68ve795","name":"Seguimiento PDI Q3","status":"pending","date":"","q":"Q3","subArea":"Gestión administrativa","completedDate":null,"onTime":null},{"id":"mo2zx68v3qw2","name":"Seguimiento PDI Q4","status":"pending","date":"","q":"Q4","subArea":"Gestión administrativa","completedDate":null,"onTime":null},{"id":"mo2zx68vb4fv","name":"Seguimientos Q1","status":"pending","date":"","q":"Q1","subArea":"Gestión administrativa","completedDate":null,"onTime":null},{"id":"mo2zx68vhdmj","name":"Seguimientos Q2","status":"pending","date":"","q":"Q2","subArea":"Gestión administrativa","completedDate":null,"onTime":null},{"id":"mo2zx68viabt","name":"Seguimientos Q3","status":"pending","date":"","q":"Q3","subArea":"Gestión administrativa","completedDate":null,"onTime":null},{"id":"mo2zx68vub6v","name":"Seguimientos Q4","status":"pending","date":"","q":"Q4","subArea":"Gestión administrativa","completedDate":null,"onTime":null},{"id":"mo2zx68v78g0","name":"Entrenamientos Q1","status":"pending","date":"","q":"Q1","subArea":"Gestión administrativa","completedDate":null,"onTime":null},{"id":"mo2zx68vtgrr","name":"Entrenamientos Q2","status":"pending","date":"","q":"Q2","subArea":"Gestión administrativa","completedDate":null,"onTime":null},{"id":"mo2zx68vuboj","name":"Entrenamientos Q3","status":"pending","date":"","q":"Q3","subArea":"Gestión administrativa","completedDate":null,"onTime":null},{"id":"mo2zx68vr9o0","name":"Entrenamientos Q4","status":"pending","date":"","q":"Q4","subArea":"Gestión administrativa","completedDate":null,"onTime":null},{"id":"mo2zx68vry7r","name":"Alineación plan desarrollo trabajo 2026","status":"pending","date":"","q":"Q1","subArea":"Gestión administrativa","completedDate":null,"onTime":null},{"id":"mo2zx68vdx1b","name":"Encuesta favorabilidad / Feedback","status":"pending","date":"","q":"Q4","subArea":"Gestión administrativa","completedDate":null,"onTime":null}]},{"id":"mo2zx68vzhq1","name":"LMS Super","area":"LMS","subareas":[],"notes":"","activities":[{"id":"mo2zx68vg517","name":"Cierre contrato UBITS","status":"pending","date":"","q":"Q1","subArea":"","completedDate":null,"onTime":null},{"id":"mo2zx68vg64q","name":"Inicio diseño LMS interno","status":"pending","date":"","q":"Q2","subArea":"","completedDate":null,"onTime":null},{"id":"mo2zx68v503i","name":"Backup información UBITS","status":"pending","date":"","q":"Q1","subArea":"","completedDate":null,"onTime":null}]},{"id":"mo2zx68vg6rx","name":"E-Learning","area":"E-Learning","subareas":[],"notes":"","activities":[{"id":"mo2zx68va8wr","name":"Direccionamiento estratégico","status":"pending","date":"","q":"Q1","subArea":"","completedDate":null,"onTime":null},{"id":"mo2zx68vrb5z","name":"GID","status":"pending","date":"","q":"Q2","subArea":"","completedDate":null,"onTime":null},{"id":"mo2zx68v9sj5","name":"Transformación Digital","status":"pending","date":"","q":"Q3","subArea":"","completedDate":null,"onTime":null},{"id":"mo2zx68vk0bq","name":"MIG","status":"pending","date":"","q":"Q4","subArea":"","completedDate":null,"onTime":null}]},{"id":"mo2zx68v3o07","name":"Viernes de aprendizaje digital","area":"Formación","subareas":[],"notes":"","activities":[{"id":"mo2zx68v1z8e","name":"Definición de la malla","status":"done","date":"2026-04-17","q":"Q1","subArea":"","completedDate":"2026-04-17","onTime":true},{"id":"mo2zx68vu5sj","name":"Construcción sesiones de formación","status":"pending","date":"2026-05-01","q":"Q2","subArea":"","completedDate":null,"onTime":null},{"id":"mo2zx68vcq4j","name":"Inscripciones Mayo","status":"pending","date":"2026-05-04","q":"Q2","subArea":"","completedDate":null,"onTime":null},{"id":"mo2zx68vxpax","name":"Inscripciones Junio","status":"pending","date":"2026-06-01","q":"Q2","subArea":"","completedDate":null,"onTime":null},{"id":"mo2zx68v1h25","name":"Inscripciones Julio","status":"pending","date":"2026-07-06","q":"Q3","subArea":"","completedDate":null,"onTime":null},{"id":"mo2zx68vfbo3","name":"Inscripciones Agosto","status":"pending","date":"2026-08-03","q":"Q3","subArea":"","completedDate":null,"onTime":null},{"id":"mo2zx68vb0le","name":"Inscripciones Septiembre","status":"pending","date":"2026-09-01","q":"Q3","subArea":"","completedDate":null,"onTime":null},{"id":"mo2zx68vwd8h","name":"Inscripciones Octubre","status":"pending","date":"2026-10-01","q":"Q4","subArea":"","completedDate":null,"onTime":null},{"id":"mo2zx68v4ytp","name":"Inscripciones Noviembre","status":"pending","date":"2026-11-02","q":"Q4","subArea":"","completedDate":null,"onTime":null}]},{"id":"mo2zx68vrz7v","name":"Onboarding","area":"Onboarding","subareas":[],"notes":"","activities":[{"id":"mo2zx68vpm4x","name":"Diseño del proceso","status":"pending","date":"","q":"Q1","subArea":"","completedDate":null,"onTime":null},{"id":"mo2zx68v191c","name":"Implementación","status":"pending","date":"","q":"Q2","subArea":"","completedDate":null,"onTime":null},{"id":"mo2zx68vuqwj","name":"Seguimiento y ajustes","status":"pending","date":"","q":"Q3","subArea":"","completedDate":null,"onTime":null},{"id":"mo2zx68vp3yk","name":"Evaluación y cierre","status":"pending","date":"","q":"Q4","subArea":"","completedDate":null,"onTime":null}]},{"id":"mo30jq2nzk58","name":"Cultura Digital","area":"","subareas":[],"activities":[],"notes":""}];
 
-function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
-function daysDiff(s) { if(!s) return 999; const d = new Date(s); d.setHours(0,0,0,0); return Math.round((d - TODAY) / 864e5); }
-function uc(days) {
-  if(days < 0) return { bar:'bar-ov', tc:'tc-ov' };
-  if(days <= 7) return { bar:'bar-cr', tc:'tc-cr' };
-  if(days <= 14) return { bar:'bar-wa', tc:'tc-wa' };
-  return { bar:'bar-so', tc:'tc-so' };
-}
-function dlbl(days) { if(days < 0) return `${Math.abs(days)}d vencida`; if(days === 0) return 'Hoy'; if(days === 1) return 'Mañana'; return `${days}d`; }
-function qPct(acts, q) { const s = acts.filter(a => a.q === q); if(!s.length) return null; return Math.round(s.filter(a => a.status === 'done').length / s.length * 100); }
-function gPct(acts) { if(!acts.length) return 0; return Math.round(acts.filter(a => a.status === 'done').length / acts.length * 100); }
-function fc(p) { if(p === 0) return 'qf-0'; if(p < 50) return 'qf-low'; if(p < 100) return 'qf-mid'; return 'qf-high'; }
-function fmtDate(s) { if(!s) return '—'; return new Date(s + 'T00:00:00').toLocaleDateString('es-CO', { day:'numeric', month:'short' }); }
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
+function daysDiff(s){if(!s)return 999;const d=new Date(s);d.setHours(0,0,0,0);return Math.round((d-TODAY)/864e5)}
+function uc(days){if(days<0)return{bar:'bar-ov',tc:'tc-ov'};if(days<=7)return{bar:'bar-cr',tc:'tc-cr'};if(days<=14)return{bar:'bar-wa',tc:'tc-wa'};return{bar:'bar-so',tc:'tc-so'}}
+function dlbl(days){if(days<0)return`${Math.abs(days)}d vencida`;if(days===0)return'Hoy';if(days===1)return'Mañana';return`${days}d`}
+function qPct(acts,q){const s=acts.filter(a=>a.q===q);if(!s.length)return null;return Math.round(s.filter(a=>a.status==='done').length/s.length*100)}
+function gPct(acts){if(!acts.length)return 0;return Math.round(acts.filter(a=>a.status==='done').length/acts.length*100)}
+function fc(p){if(p===0)return'qf-0';if(p<50)return'qf-low';if(p<100)return'qf-mid';return'qf-high'}
+function fmtDate(s){if(!s)return'—';return new Date(s+'T00:00:00').toLocaleDateString('es-CO',{day:'numeric',month:'short'})}
+function setSyncStatus(state,label){document.getElementById('sync-dot').className='sync-dot '+state;document.getElementById('sync-label').textContent=label}
 
-function openModal(id) { document.getElementById(id).style.display = 'flex'; const i = document.querySelector('#' + id + ' input'); if(i) setTimeout(() => i.focus(), 50); }
-function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-
-function switchView(v) {
-  document.querySelectorAll('.view').forEach(e => e.classList.remove('active'));
-  const map = { overview:0, q1:1, q2:2, q3:3, q4:4 };
-  document.querySelectorAll('.tab').forEach((e,i) => e.classList.toggle('active', i === map[v]));
-  document.getElementById('view-' + v).classList.add('active');
-  if(v === 'overview') { renderProjects(); renderUrgency(); renderCompliance(); }
-  else if(v.startsWith('q')) renderQ(v.toUpperCase());
-}
-
-function backToOverview() { activeProject = null; switchView('overview'); }
-
-function saveProject() {
-  const name = document.getElementById('np-name').value.trim();
-  if(!name) return;
-  const sub = document.getElementById('np-subareas').value.trim();
-  const subareas = sub ? sub.split(',').map(s => s.trim()).filter(Boolean) : [];
-  projects.push({ id:uid(), name, area:document.getElementById('np-area').value, subareas, activities:[], notes:'' });
-  closeModal('modal-project');
-  document.getElementById('np-name').value = '';
-  document.getElementById('np-subareas').value = '';
-  save(); renderProjects(); renderCompliance();
+async function loadFromSheets(){
+  try{
+    setSyncStatus('saving','Conectando...');
+    const res=await fetch(API+'?action=load');
+    const data=JSON.parse(await res.text());
+    projects=(Array.isArray(data)&&data.length>0)?data:JSON.parse(JSON.stringify(SEED));
+    if(!(Array.isArray(data)&&data.length>0))await saveToSheets();
+    setSyncStatus('ok','Sincronizado');
+  }catch(e){
+    setSyncStatus('error','Sin conexión — modo local');
+    try{const l=localStorage.getItem('dash_projects_2025');projects=l?JSON.parse(l):JSON.parse(JSON.stringify(SEED));}
+    catch(e2){projects=JSON.parse(JSON.stringify(SEED));}
+  }
+  document.getElementById('main-loading').style.display='none';
+  document.getElementById('overview-content').style.display='block';
+  renderProjects();renderUrgency();renderCompliance();
 }
 
-function openDuplicate(id, e) {
-  e.stopPropagation(); dupSourceId = id;
-  const src = projects.find(p => p.id === id);
-  document.getElementById('dup-name').value = src.name + ' (copia)';
-  document.getElementById('dup-area').value = src.area || '';
+async function saveToSheets(){
+  setSyncStatus('saving','Guardando...');
+  try{
+    localStorage.setItem('dash_projects_2025',JSON.stringify(projects));
+    await fetch(API,{method:'POST',body:JSON.stringify({action:'save',data:projects})});
+    setSyncStatus('ok','Sincronizado');
+  }catch(e){
+    setSyncStatus('error','Guardado local');
+    localStorage.setItem('dash_projects_2025',JSON.stringify(projects));
+  }
+}
+function scheduleSave(){clearTimeout(saveTimer);saveTimer=setTimeout(saveToSheets,1500)}
+
+function openModal(id){document.getElementById(id).style.display='flex';const i=document.querySelector('#'+id+' input');if(i)setTimeout(()=>i.focus(),50)}
+function closeModal(id){document.getElementById(id).style.display='none'}
+
+function switchView(v){
+  document.querySelectorAll('.view').forEach(e=>e.classList.remove('active'));
+  const map={overview:0,q1:1,q2:2,q3:3,q4:4};
+  document.querySelectorAll('.tab').forEach((e,i)=>e.classList.toggle('active',i===map[v]));
+  document.getElementById('view-'+v).classList.add('active');
+  if(v==='overview'){renderProjects();renderUrgency();renderCompliance();}
+  else if(v.startsWith('q'))renderQ(v.toUpperCase());
+}
+function backToOverview(){activeProject=null;switchView('overview')}
+
+function saveProject(){
+  const name=document.getElementById('np-name').value.trim();if(!name)return;
+  const sub=document.getElementById('np-subareas').value.trim();
+  projects.push({id:uid(),name,area:document.getElementById('np-area').value,subareas:sub?sub.split(',').map(s=>s.trim()).filter(Boolean):[],activities:[],notes:''});
+  closeModal('modal-project');document.getElementById('np-name').value='';document.getElementById('np-subareas').value='';
+  scheduleSave();renderProjects();renderCompliance();
+}
+function openDuplicate(id,e){
+  e.stopPropagation();dupSourceId=id;const src=projects.find(p=>p.id===id);
+  document.getElementById('dup-name').value=src.name+' (copia)';document.getElementById('dup-area').value=src.area||'';
   openModal('modal-duplicate');
 }
-function confirmDuplicate() {
-  const src = projects.find(p => p.id === dupSourceId); if(!src) return;
-  const newActs = src.activities.map(a => ({ ...a, id:uid(), status:'pending', completedDate:null, onTime:null }));
-  projects.push({ id:uid(), name:document.getElementById('dup-name').value.trim() || src.name + ' (copia)', area:document.getElementById('dup-area').value, subareas:[...(src.subareas||[])], activities:newActs, notes:'' });
-  closeModal('modal-duplicate'); save(); renderProjects(); renderCompliance();
+function confirmDuplicate(){
+  const src=projects.find(p=>p.id===dupSourceId);if(!src)return;
+  projects.push({id:uid(),name:document.getElementById('dup-name').value.trim()||src.name+' (copia)',area:document.getElementById('dup-area').value,subareas:[...(src.subareas||[])],activities:src.activities.map(a=>({...a,id:uid(),status:'pending',completedDate:null,onTime:null})),notes:''});
+  closeModal('modal-duplicate');scheduleSave();renderProjects();renderCompliance();
 }
-
-function deleteProject(id, e) {
-  e.stopPropagation();
-  if(!confirm('¿Eliminar este proyecto?')) return;
-  projects = projects.filter(p => p.id !== id);
-  save(); renderProjects(); renderUrgency(); renderCompliance();
+function deleteProject(id,e){
+  e.stopPropagation();if(!confirm('¿Eliminar este proyecto?'))return;
+  projects=projects.filter(p=>p.id!==id);scheduleSave();renderProjects();renderUrgency();renderCompliance();
 }
-
-function openActivityModal() {
-  const p = activeProject;
-  const wrap = document.getElementById('na-subarea-wrap');
-  const sel = document.getElementById('na-subarea');
-  if(p && p.subareas && p.subareas.length) {
-    sel.innerHTML = '<option value="">Sin sub-área</option>' + p.subareas.map(s => `<option value="${s}">${s}</option>`).join('');
-    wrap.style.display = 'block';
-  } else { wrap.style.display = 'none'; }
-  document.getElementById('na-name').value = '';
-  document.getElementById('na-status').value = 'pending';
-  document.getElementById('na-date').value = '';
-  document.getElementById('na-q').value = 'Q1';
+function openActivityModal(){
+  const p=activeProject,wrap=document.getElementById('na-subarea-wrap'),sel=document.getElementById('na-subarea');
+  if(p&&p.subareas&&p.subareas.length){sel.innerHTML='<option value="">Sin sub-área</option>'+p.subareas.map(s=>`<option value="${s}">${s}</option>`).join('');wrap.style.display='block';}
+  else wrap.style.display='none';
+  document.getElementById('na-name').value='';document.getElementById('na-status').value='pending';
+  document.getElementById('na-date').value='';document.getElementById('na-q').value='Q1';
   openModal('modal-activity');
 }
-
-function saveActivity() {
-  if(!activeProject) return;
-  const name = document.getElementById('na-name').value.trim();
-  if(!name) return;
-  const subArea = document.getElementById('na-subarea')?.value || '';
-  activeProject.activities.push({ id:uid(), name, status:document.getElementById('na-status').value, date:document.getElementById('na-date').value, q:document.getElementById('na-q').value, subArea, completedDate:null, onTime:null });
-  closeModal('modal-activity');
-  save(); renderDetail(); renderCompliance();
+function saveActivity(){
+  if(!activeProject)return;const name=document.getElementById('na-name').value.trim();if(!name)return;
+  activeProject.activities.push({id:uid(),name,status:document.getElementById('na-status').value,date:document.getElementById('na-date').value,q:document.getElementById('na-q').value,subArea:document.getElementById('na-subarea')?.value||'',completedDate:null,onTime:null});
+  closeModal('modal-activity');document.getElementById('na-name').value='';
+  scheduleSave();renderDetail();renderCompliance();
 }
 
-function renderProjects() {
-  const grid = document.getElementById('projects-grid');
-  if(!projects.length) { grid.innerHTML = '<div class="empty" style="grid-column:1/-1">Sin proyectos. Crea el primero →</div>'; return; }
-  grid.innerHTML = projects.map(p => {
-    const gp = gPct(p.activities);
-    const counts = { pending:0, inprogress:0, delayed:0, done:0 };
-    p.activities.forEach(a => counts[a.status] = (counts[a.status]||0) + 1);
-    const badges = Object.entries(counts).filter(([,v]) => v > 0).map(([k,v]) => `<span class="badge ${BADGE[k]}">${v} ${STATUSES[k]}</span>`).join('');
-    const qCells = QS.map(q => {
-      const pct = qPct(p.activities, q);
-      const n = p.activities.filter(a => a.q === q).length;
-      return `<div class="q-cell"><div class="q-cell-lbl">${q}</div><div class="q-cell-pct" style="${pct===null?'color:var(--text-secondary)':''}">${pct===null?'—':`${pct}%`}</div><div class="q-mini-bar"><div class="q-mini-fill ${fc(pct===null?0:pct)}" style="width:${pct===null?0:pct}%"></div></div><div style="font-size:9px;color:var(--text-secondary);margin-top:2px">${n?`${n} act.`:'—'}</div></div>`;
-    }).join('');
-    const isSpecial = p.subareas && p.subareas.length > 0;
-    return `<div class="proj-card${isSpecial?' special':''}" onclick="openDetail('${p.id}')">
-      <div class="card-actions">
-        <button class="ca-btn" onclick="openDuplicate('${p.id}',event)">Duplicar</button>
-        <button class="ca-btn danger" onclick="deleteProject('${p.id}',event)">×</button>
-      </div>
-      <div class="proj-top">
-        <div>
-          <div class="proj-name">${p.name}</div>
-          <div class="proj-area-tag">${p.area?`<span class="badge b-area">${p.area}</span>`:''} ${isSpecial?'<span class="badge b-special">por área</span>':''}</div>
+function renderProjects(){
+  const grid=document.getElementById('projects-grid');
+  if(!projects.length){grid.innerHTML='<div class="empty" style="grid-column:1/-1">Sin proyectos.</div>';return;}
+  grid.innerHTML=projects.map(p=>{
+    const gp=gPct(p.activities),counts={pending:0,inprogress:0,delayed:0,done:0};
+    p.activities.forEach(a=>counts[a.status]=(counts[a.status]||0)+1);
+    const badges=Object.entries(counts).filter(([,v])=>v>0).map(([k,v])=>`<span class="badge ${BADGE[k]}">${v} ${STATUSES[k]}</span>`).join('');
+    const qCells=QS.map(q=>{const pct=qPct(p.activities,q),n=p.activities.filter(a=>a.q===q).length;return`<div class="q-cell"><div class="q-cell-lbl">${q}</div><div class="q-cell-pct" style="${pct===null?'color:var(--text-secondary)':''}">${pct===null?'—':`${pct}%`}</div><div class="q-mini-bar"><div class="q-mini-fill ${fc(pct===null?0:pct)}" style="width:${pct===null?0:pct}%"></div></div><div style="font-size:9px;color:var(--text-secondary);margin-top:2px">${n?`${n} act.`:'—'}</div></div>`;}).join('');
+    const isSpecial=p.subareas&&p.subareas.length>0;
+    return`<div class="proj-card${isSpecial?' special':''}" onclick="openDetail('${p.id}')"><div class="card-actions"><button class="ca-btn" onclick="openDuplicate('${p.id}',event)">Duplicar</button><button class="ca-btn danger" onclick="deleteProject('${p.id}',event)">×</button></div><div class="proj-top"><div><div class="proj-name">${p.name}</div><div class="proj-area-tag">${p.area?`<span class="badge b-area">${p.area}</span>`:''} ${isSpecial?'<span class="badge b-special">por área</span>':''}</div></div><div style="flex-shrink:0"><div class="global-pct">${gp}%</div><div class="global-lbl">global</div></div></div><div class="prog-bar"><div class="prog-fill" style="width:${gp}%"></div></div><div class="q-breakdown">${qCells}</div><div class="proj-meta">${p.activities.length} actividad${p.activities.length!==1?'es':''} ${badges}</div></div>`;
+  }).join('');
+}
+
+function renderUrgency(){
+  const panel=document.getElementById('urgency-panel'),cands=[];
+  projects.forEach(p=>p.activities.forEach(a=>{if(!a.date||a.status==='done')return;const days=daysDiff(a.date);if(days<=21)cands.push({...a,projName:p.name,projId:p.id,days});}));
+  cands.sort((a,b)=>a.days-b.days);
+  const ov=cands.filter(a=>a.days<0).length;
+  if(!cands.length){panel.innerHTML=`<div class="panel-header"><div class="panel-title"><div class="udot" style="background:#639922"></div>Próximos vencimientos</div><span style="font-size:12px;color:var(--text-secondary)">próximas 3 semanas</span></div><div class="empty">Sin actividades próximas a vencer</div>`;return;}
+  panel.innerHTML=`<div class="panel-header"><div class="panel-title"><div class="udot" style="background:${ov>0?'#E24B4A':'#EF9F27'}"></div>Próximos vencimientos</div><span style="font-size:12px;color:var(--text-secondary)">${cands.length} actividades · próximas 3 semanas${ov>0?` · ${ov} vencida${ov>1?'s':''}`:'  '}</span></div>`+cands.map((a,i)=>{const c=uc(a.days);return`<div class="urg-item" onclick="openDetail('${a.projId}')"><span class="urg-rank">${i+1}</span><div class="urg-bar ${c.bar}"></div><div class="urg-main"><div class="urg-aname">${a.name}</div><div class="urg-pname">${a.projName} · <span class="badge ${BADGE[a.status]}">${STATUSES[a.status]}</span></div></div><div class="urg-right"><span class="urg-days ${c.tc}">${dlbl(a.days)}</span><span class="urg-date">${fmtDate(a.date)}</span></div></div>`;}).join('');
+}
+
+function getComplianceData(){const all=[];projects.forEach(p=>p.activities.forEach(a=>{if(a.status==='done'&&a.date)all.push({date:a.date,onTime:a.onTime!==false});}));return all.sort((a,b)=>a.date.localeCompare(b.date));}
+function renderCompliance(){
+  const all=getComplianceData(),total=all.length,onT=all.filter(a=>a.onTime).length;
+  document.getElementById('cm-total').textContent=total;
+  document.getElementById('cm-ontime').textContent=total?Math.round(onT/total*100)+'%':'—';
+  document.getElementById('cm-late').textContent=total?Math.round((total-onT)/total*100)+'%':'—';
+  let streak=0,streakType='';const rev=[...all].reverse();
+  if(rev.length){streakType=rev[0].onTime?'a tiempo':'con retraso';for(const a of rev){if(a.onTime===rev[0].onTime)streak++;else break;}}
+  document.getElementById('cm-streak').textContent=streak||'—';document.getElementById('cm-streak-lbl').textContent=streak?streakType:'';
+  const b={};all.forEach(a=>{const d=new Date(a.date+'T00:00:00'),m=new Date(d);m.setDate(d.getDate()-d.getDay()+1);const k=m.toISOString().slice(0,10);if(!b[k])b[k]={o:0,l:0};a.onTime?b[k].o++:b[k].l++;});
+  const keys=Object.keys(b).sort();
+  if(complianceChart){complianceChart.destroy();complianceChart=null;}
+  if(!keys.length)return;
+  complianceChart=new Chart(document.getElementById('compliance-chart'),{type:'bar',data:{labels:keys.map(k=>fmtDate(k)),datasets:[{label:'A tiempo',data:keys.map(k=>b[k].o),backgroundColor:'#639922',stack:'s'},{label:'Con retraso',data:keys.map(k=>b[k].l),backgroundColor:'#E24B4A',stack:'s'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:{size:11},color:'#888780',autoSkip:true,maxRotation:0}},y:{grid:{color:'rgba(136,135,128,.15)'},ticks:{font:{size:11},color:'#888780',stepSize:1},beginAtZero:true}}}});
+}
+
+function openDetail(id){
+  activeProject=projects.find(p=>p.id===id);if(!activeProject)return;
+  document.querySelectorAll('.view').forEach(e=>e.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));
+  document.getElementById('view-detail').classList.add('active');renderDetail();
+}
+function renderDetail(){
+  if(!activeProject)return;
+  document.getElementById('det-title').textContent=activeProject.name;
+  document.getElementById('det-area').textContent=activeProject.area?`Área: ${activeProject.area}`:'';
+  document.getElementById('notes-box').value=activeProject.notes||'';
+  const abSec=document.getElementById('area-breakdown-section');
+  if(activeProject.subareas&&activeProject.subareas.length){
+    abSec.innerHTML=`<div style="display:flex;align-items:center;justify-content:space-between;margin:1rem 0 .5rem"><span class="section-lbl" style="margin:0">Cumplimiento por área</span><button class="btn" style="font-size:11px;padding:3px 10px" onclick="openEditSubareas()">Editar áreas</button></div><div class="area-grid">`+activeProject.subareas.map(sa=>{const acts=activeProject.activities.filter(a=>a.subArea===sa),pct=acts.length?Math.round(acts.filter(a=>a.status==='done').length/acts.length*100):0;return`<div class="area-card"><div class="area-name">${sa}</div><div style="display:flex;align-items:baseline;gap:6px"><div class="area-pct">${pct}%</div><div style="font-size:11px;color:var(--text-secondary)">${acts.length} act.</div></div><div class="area-bar"><div class="area-fill" style="width:${pct}%"></div></div></div>`;}).join('')+`</div>`;
+  }else{
+    abSec.innerHTML=`<div style="margin:1rem 0 .5rem"><button class="btn" style="font-size:11px;padding:3px 10px" onclick="openEditSubareas()">+ Agregar áreas de seguimiento</button></div>`;
+  }
+  document.getElementById('det-q-bar').innerHTML=QS.map(q=>{const acts=activeProject.activities.filter(a=>a.q===q),pct=qPct(activeProject.activities,q);return`<div class="det-q-card"><div class="det-q-label">${q}</div><div class="det-q-pct">${pct===null?'—':`${pct}%`}</div><div class="det-q-sub">${acts.length} actividad${acts.length!==1?'es':''}</div><div class="det-q-bar2"><div class="det-q-fill" style="width:${pct===null?0:pct}%"></div></div></div>`;}).join('');
+  const list=document.getElementById('act-list');
+  if(!activeProject.activities.length)list.innerHTML='<div class="empty">Sin actividades →</div>';
+  else list.innerHTML=activeProject.activities.map(a=>`<div class="act-item"><span class="hito-star${a.hito?' on':''}" onclick="toggleHito('${a.id}')" title="${a.hito?'Quitar hito':'Marcar como hito'}">★</span><span class="act-name">${a.name}${a.subArea?` <span class="badge b-area" style="font-size:10px">${a.subArea}</span>`:''}${a.hito?` <span class="badge b-hito">hito</span>`:''}</span><select class="act-sel" onchange="updateAct('${a.id}','status',this.value)">${Object.entries(STATUSES).map(([k,v])=>`<option value="${k}"${a.status===k?' selected':''}>${v}</option>`).join('')}</select><input class="act-date" type="date" value="${a.date||''}" onchange="updateAct('${a.id}','date',this.value)" /><select class="act-sel" onchange="updateAct('${a.id}','q',this.value)">${QS.map(q=>`<option value="${q}"${a.q===q?' selected':''}>${q}</option>`).join('')}</select><button class="del-act" onclick="deleteAct('${a.id}')">×</button></div>`).join('');
+  const cl=activeProject.activities.filter(a=>a.status==='done'&&a.date).sort((a,b)=>b.date.localeCompare(a.date));
+  document.getElementById('proj-comp-log').innerHTML=cl.length?cl.map(a=>`<div class="log-item"><span class="log-date">${fmtDate(a.date)}</span><span class="log-name">${a.name}</span><span class="${a.onTime!==false?'lot-yes':'lot-no'}">${a.onTime!==false?'a tiempo':'con retraso'}</span></div>`).join(''):'<div class="empty">Sin actividades completadas aún.</div>';
+}
+
+function updateAct(id,field,val){
+  if(!activeProject)return;const act=activeProject.activities.find(a=>a.id===id);if(!act)return;
+  const prev=act.status;act[field]=val;
+  if(field==='status'&&val==='done'&&prev!=='done'){act.completedDate=new Date().toISOString().slice(0,10);act.onTime=act.date?daysDiff(act.date)>=0:true;}
+  if(field==='status'&&val!=='done'&&prev==='done'){act.completedDate=null;act.onTime=null;}
+  scheduleSave();renderDetail();renderCompliance();
+}
+function deleteAct(id){if(!activeProject)return;activeProject.activities=activeProject.activities.filter(a=>a.id!==id);scheduleSave();renderDetail();renderCompliance();}
+function saveNotes(){if(activeProject){activeProject.notes=document.getElementById('notes-box').value;scheduleSave();}}
+
+function renderQ(q){
+  const c=document.getElementById(q.toLowerCase()+'-view');
+  if(!projects.length){c.innerHTML='<div class="empty">Sin proyectos.</div>';return;}
+  c.innerHTML=projects.map(p=>{const acts=p.activities.filter(a=>a.q===q),pct=qPct(p.activities,q);return`<div class="q-block"><div class="q-bh"><span class="q-bt">${p.name}${p.area?` <span class="badge b-area" style="font-size:10px">${p.area}</span>`:''}</span><span style="font-size:13px;font-weight:500;color:${pct===100?'#639922':pct===null?'var(--text-secondary)':'var(--text-primary)'}">${pct===null?'Sin actividades':`${pct}% completado`}</span></div><table class="q-table"><thead><tr><th style="width:55%">Actividad</th><th style="width:25%">Estado</th><th style="width:20%">Fecha</th></tr></thead><tbody>${acts.length?acts.map(a=>`<tr><td>${a.name}${a.subArea?` <span class="badge b-area" style="font-size:10px">${a.subArea}</span>`:''}</td><td><span class="badge ${BADGE[a.status]}">${STATUSES[a.status]}</span></td><td>${fmtDate(a.date)}</td></tr>`).join(''):`<tr><td colspan="3" style="color:var(--text-secondary);font-size:12px;padding:10px 1rem">Sin actividades en ${q}</td></tr>`}</tbody></table></div>`;}).join('');
+}
+
+function openEditSubareas(){
+  if(!activeProject)return;
+  const list=document.getElementById('subarea-edit-list');
+  list.innerHTML=(activeProject.subareas||[]).map((sa,i)=>`
+    <div style="display:flex;gap:6px;margin-bottom:7px;align-items:center">
+      <input value="${sa}" id="sa-input-${i}" style="flex:1;font-size:13px;padding:6px 10px;border-radius:var(--radius-md);border:0.5px solid var(--border-mid);background:var(--bg-primary);color:var(--text-primary)" />
+      <button onclick="removeSubarea(${i})" style="padding:4px 8px;font-size:13px;border:0.5px solid var(--border-mid);border-radius:var(--radius-md);background:transparent;color:var(--text-secondary);cursor:pointer" onmouseover="this.style.background='#FCEBEB';this.style.color='#791F1F'" onmouseout="this.style.background='transparent';this.style.color='var(--text-secondary)'">×</button>
+    </div>`).join('');
+  openModal('modal-subareas');
+}
+
+function addSubareaRow(){
+  const list=document.getElementById('subarea-edit-list');
+  const i=list.children.length;
+  const div=document.createElement('div');
+  div.style.cssText='display:flex;gap:6px;margin-bottom:7px;align-items:center';
+  div.innerHTML=`<input placeholder="Nombre del área" id="sa-input-${i}" style="flex:1;font-size:13px;padding:6px 10px;border-radius:var(--radius-md);border:0.5px solid var(--border-mid);background:var(--bg-primary);color:var(--text-primary)" /><button onclick="this.parentElement.remove()" style="padding:4px 8px;font-size:13px;border:0.5px solid var(--border-mid);border-radius:var(--radius-md);background:transparent;color:var(--text-secondary);cursor:pointer" onmouseover="this.style.background='#FCEBEB';this.style.color='#791F1F'" onmouseout="this.style.background='transparent';this.style.color='var(--text-secondary)'">×</button>`;
+  list.appendChild(div);
+  div.querySelector('input').focus();
+}
+
+function removeSubarea(i){
+  const row=document.getElementById('subarea-edit-list').children[i];
+  if(row)row.remove();
+}
+
+function saveSubareas(){
+  if(!activeProject)return;
+  const inputs=document.getElementById('subarea-edit-list').querySelectorAll('input');
+  const newNames=Array.from(inputs).map(i=>i.value.trim()).filter(Boolean);
+  const oldNames=activeProject.subareas||[];
+  oldNames.forEach((old,idx)=>{
+    const nuevo=newNames[idx];
+    if(nuevo&&nuevo!==old){
+      activeProject.activities.forEach(a=>{if(a.subArea===old)a.subArea=nuevo;});
+    }
+  });
+  activeProject.subareas=newNames;
+  closeModal('modal-subareas');
+  scheduleSave();renderDetail();
+}
+
+function toggleHito(id){
+  if(!activeProject)return;
+  const act=activeProject.activities.find(a=>a.id===id);if(!act)return;
+  act.hito=!act.hito;
+  scheduleSave();renderDetail();
+}
+
+let gerenciaOn=false;
+function toggleGerencia(){
+  gerenciaOn=!gerenciaOn;
+  const btn=document.getElementById('toggle-gerencia');
+  const gv=document.getElementById('gerencia-view');
+  const ov=document.getElementById('overview-content');
+  btn.classList.toggle('btn-gerencia-on',gerenciaOn);
+  btn.textContent=gerenciaOn?'Vista completa':'Vista gerencia';
+  gv.style.display=gerenciaOn?'block':'none';
+  document.getElementById('projects-grid').style.display=gerenciaOn?'none':'grid';
+  document.getElementById('urgency-panel').style.display=gerenciaOn?'none':'block';
+  document.querySelectorAll('.panel').forEach(p=>{if(p.querySelector('#compliance-chart'))p.style.display=gerenciaOn?'none':'block';});
+  if(gerenciaOn)renderGerencia();
+}
+
+function renderGerencia(){
+  const qf=document.getElementById('gerencia-q-filter').value;
+  const container=document.getElementById('gerencia-content');
+  const projs=projects.map(p=>{
+    let hitos=p.activities.filter(a=>a.hito);
+    if(qf!=='all')hitos=hitos.filter(a=>a.q===qf);
+    return{...p,hitos};
+  }).filter(p=>p.hitos.length>0);
+
+  if(!projs.length){
+    container.innerHTML=`<div style="text-align:center;padding:3rem 1rem;color:var(--text-secondary);font-size:13px">No hay hitos marcados aún.<br><span style="font-size:12px">Entra a cada proyecto y marca las actividades estratégicas con ★</span></div>`;
+    return;
+  }
+
+  container.innerHTML=projs.map(p=>{
+    const total=p.hitos.length;
+    const done=p.hitos.filter(a=>a.status==='done').length;
+    const pct=Math.round(done/total*100);
+    const qPcts=QS.map(q=>{const s=p.hitos.filter(a=>a.q===q);if(!s.length)return null;const d=s.filter(a=>a.status==='done').length;return{q,pct:Math.round(d/s.length*100),n:s.length};}).filter(Boolean);
+    const qBadges=qPcts.map(x=>`<div class="gpct-item"><div class="gpct-val">${x.pct}%</div><div class="gpct-lbl">${x.q} · ${x.n} hito${x.n>1?'s':''}</div></div>`).join('');
+    const rows=p.hitos.map(a=>`<tr><td>${a.name}${a.subArea?` <span class="badge b-area" style="font-size:10px">${a.subArea}</span>`:''}</td><td><span class="badge" style="background:#EEEDFE;color:#3C3489;font-size:10px">${a.q}</span></td><td><span class="badge ${BADGE[a.status]}">${STATUSES[a.status]}</span></td><td style="color:var(--text-secondary)">${fmtDate(a.date)}</td></tr>`).join('');
+    return`<div class="gerencia-proj">
+      <div class="gerencia-proj-header">
+        <div><div class="gerencia-proj-name">${p.name}</div>${p.area?`<div style="font-size:11px;color:var(--text-secondary);margin-top:2px">${p.area}</div>`:''}</div>
+        <div class="gerencia-pcts">
+          <div class="gpct-item" style="margin-right:8px;padding-right:12px;border-right:0.5px solid var(--border-light)"><div class="gpct-val" style="color:${pct===100?'#639922':pct>0?'var(--blue)':'var(--text-secondary)'}">${pct}%</div><div class="gpct-lbl">hitos ${done}/${total}</div></div>
+          ${qBadges}
         </div>
-        <div style="flex-shrink:0"><div class="global-pct">${gp}%</div><div class="global-lbl">global</div></div>
       </div>
-      <div class="prog-bar"><div class="prog-fill" style="width:${gp}%"></div></div>
-      <div class="q-breakdown">${qCells}</div>
-      <div class="proj-meta">${p.activities.length} actividad${p.activities.length!==1?'es':''} ${badges}</div>
+      <table class="gerencia-table"><thead><tr><th style="width:45%">Hito</th><th style="width:10%">Q</th><th style="width:22%">Estado</th><th style="width:23%">Fecha</th></tr></thead><tbody>${rows}</tbody></table>
     </div>`;
   }).join('');
 }
 
-function renderUrgency() {
-  const panel = document.getElementById('urgency-panel');
-  const cands = [];
-  projects.forEach(p => p.activities.forEach(a => {
-    if(!a.date || a.status === 'done') return;
-    const days = daysDiff(a.date);
-    if(days <= 21) cands.push({ ...a, projName:p.name, projId:p.id, days });
-  }));
-  cands.sort((a,b) => a.days - b.days);
-  const ov = cands.filter(a => a.days < 0).length;
-  if(!cands.length) { panel.innerHTML = `<div class="panel-header"><div class="panel-title"><div class="udot" style="background:#639922"></div>Próximos vencimientos</div><span style="font-size:12px;color:var(--text-secondary)">próximas 3 semanas</span></div><div class="empty">Sin actividades próximas a vencer</div>`; return; }
-  const rows = cands.map((a,i) => {
-    const c = uc(a.days);
-    return `<div class="urg-item" onclick="openDetail('${a.projId}')"><span class="urg-rank">${i+1}</span><div class="urg-bar ${c.bar}"></div><div class="urg-main"><div class="urg-aname">${a.name}</div><div class="urg-pname">${a.projName} · <span class="badge ${BADGE[a.status]}">${STATUSES[a.status]}</span></div></div><div class="urg-right"><span class="urg-days ${c.tc}">${dlbl(a.days)}</span><span class="urg-date">${fmtDate(a.date)}</span></div></div>`;
-  }).join('');
-  panel.innerHTML = `<div class="panel-header"><div class="panel-title"><div class="udot" style="background:${ov>0?'#E24B4A':'#EF9F27'}"></div>Próximos vencimientos</div><span style="font-size:12px;color:var(--text-secondary)">${cands.length} actividades · próximas 3 semanas${ov>0?` · ${ov} vencida${ov>1?'s':''}`:'  '}</span></div>${rows}`;
-}
-
-function getComplianceData() {
-  const all = [];
-  projects.forEach(p => p.activities.forEach(a => { if(a.status === 'done' && a.date) all.push({ date:a.date, onTime:a.onTime !== false, name:a.name, proj:p.name }); }));
-  return all.sort((a,b) => a.date.localeCompare(b.date));
-}
-function buildWeeklyBuckets(all) {
-  if(!all.length) return { labels:[], onTime:[], late:[] };
-  const b = {};
-  all.forEach(a => { const d = new Date(a.date + 'T00:00:00'); const m = new Date(d); m.setDate(d.getDate() - d.getDay() + 1); const k = m.toISOString().slice(0,10); if(!b[k]) b[k] = { onTime:0, late:0 }; a.onTime ? b[k].onTime++ : b[k].late++; });
-  const keys = Object.keys(b).sort();
-  return { labels:keys.map(k => fmtDate(k)), onTime:keys.map(k => b[k].onTime), late:keys.map(k => b[k].late) };
-}
-function renderCompliance() {
-  const all = getComplianceData();
-  const total = all.length, onT = all.filter(a => a.onTime).length;
-  document.getElementById('cm-total').textContent = total;
-  document.getElementById('cm-ontime').textContent = total ? Math.round(onT/total*100)+'%' : '—';
-  document.getElementById('cm-late').textContent = total ? Math.round((total-onT)/total*100)+'%' : '—';
-  let streak = 0, streakType = '';
-  const rev = [...all].reverse();
-  if(rev.length) { streakType = rev[0].onTime ? 'a tiempo' : 'con retraso'; for(const a of rev) { if(a.onTime === rev[0].onTime) streak++; else break; } }
-  document.getElementById('cm-streak').textContent = streak || '—';
-  document.getElementById('cm-streak-lbl').textContent = streak ? streakType : '';
-  const { labels, onTime:ot, late:lt } = buildWeeklyBuckets(all);
-  if(complianceChart) { complianceChart.destroy(); complianceChart = null; }
-  if(!labels.length) return;
-  complianceChart = new Chart(document.getElementById('compliance-chart'), { type:'bar', data:{ labels, datasets:[{ label:'A tiempo', data:ot, backgroundColor:'#639922', stack:'s' },{ label:'Con retraso', data:lt, backgroundColor:'#E24B4A', stack:'s' }] }, options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } }, scales:{ x:{ grid:{ display:false }, ticks:{ font:{ size:11 }, color:'#888780', autoSkip:true, maxRotation:0 } }, y:{ grid:{ color:'rgba(136,135,128,.15)' }, ticks:{ font:{ size:11 }, color:'#888780', stepSize:1 }, beginAtZero:true } } } });
-}
-
-function openDetail(id) {
-  activeProject = projects.find(p => p.id === id); if(!activeProject) return;
-  document.querySelectorAll('.view').forEach(e => e.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(e => e.classList.remove('active'));
-  document.getElementById('view-detail').classList.add('active');
-  renderDetail();
-}
-
-function renderDetail() {
-  if(!activeProject) return;
-  document.getElementById('det-title').textContent = activeProject.name;
-  document.getElementById('det-area').textContent = activeProject.area ? `Área: ${activeProject.area}` : '';
-  document.getElementById('notes-box').value = activeProject.notes || '';
-
-  const abSec = document.getElementById('area-breakdown-section');
-  if(activeProject.subareas && activeProject.subareas.length) {
-    const cards = activeProject.subareas.map(sa => {
-      const acts = activeProject.activities.filter(a => a.subArea === sa);
-      const pct = acts.length ? Math.round(acts.filter(a => a.status === 'done').length / acts.length * 100) : 0;
-      return `<div class="area-card"><div class="area-name">${sa}</div><div style="display:flex;align-items:baseline;gap:6px"><div class="area-pct">${pct}%</div><div style="font-size:11px;color:var(--text-secondary)">${acts.length} act.</div></div><div class="area-bar"><div class="area-fill" style="width:${pct}%"></div></div></div>`;
-    }).join('');
-    abSec.innerHTML = `<div class="section-lbl">Cumplimiento por área</div><div class="area-grid">${cards}</div>`;
-  } else { abSec.innerHTML = ''; }
-
-  document.getElementById('det-q-bar').innerHTML = QS.map(q => {
-    const acts = activeProject.activities.filter(a => a.q === q);
-    const pct = qPct(activeProject.activities, q);
-    return `<div class="det-q-card"><div class="det-q-label">${q}</div><div class="det-q-pct">${pct===null?'—':`${pct}%`}</div><div class="det-q-sub">${acts.length} actividad${acts.length!==1?'es':''}</div><div class="det-q-bar2"><div class="det-q-fill" style="width:${pct===null?0:pct}%"></div></div></div>`;
-  }).join('');
-
-  const list = document.getElementById('act-list');
-  if(!activeProject.activities.length) { list.innerHTML = '<div class="empty">Sin actividades. Agrega la primera →</div>'; }
-  else {
-    list.innerHTML = activeProject.activities.map(a => {
-      const subTag = a.subArea ? `<span class="badge b-area" style="font-size:10px">${a.subArea}</span>` : '';
-      return `<div class="act-item">
-        <span class="act-name">${a.name} ${subTag}</span>
-        <select class="act-sel" onchange="updateAct('${a.id}','status',this.value)">${Object.entries(STATUSES).map(([k,v])=>`<option value="${k}"${a.status===k?' selected':''}>${v}</option>`).join('')}</select>
-        <input class="act-date" type="date" value="${a.date||''}" onchange="updateAct('${a.id}','date',this.value)" />
-        <select class="act-sel" onchange="updateAct('${a.id}','q',this.value)">${QS.map(q=>`<option value="${q}"${a.q===q?' selected':''}>${q}</option>`).join('')}</select>
-        <button class="del-act" onclick="deleteAct('${a.id}')">×</button>
-      </div>`;
-    }).join('');
-  }
-
-  const cl = activeProject.activities.filter(a => a.status === 'done' && a.date).sort((a,b) => b.date.localeCompare(a.date));
-  const logEl = document.getElementById('proj-comp-log');
-  if(!cl.length) { logEl.innerHTML = '<div class="empty">Sin actividades completadas aún.</div>'; }
-  else { logEl.innerHTML = cl.map(a => `<div class="log-item"><span class="log-date">${fmtDate(a.date)}</span><span class="log-name">${a.name}</span><span class="${a.onTime!==false?'lot-yes':'lot-no'}">${a.onTime!==false?'a tiempo':'con retraso'}</span></div>`).join(''); }
-}
-
-function updateAct(id, field, val) {
-  if(!activeProject) return;
-  const act = activeProject.activities.find(a => a.id === id); if(!act) return;
-  const prev = act.status; act[field] = val;
-  if(field === 'status' && val === 'done' && prev !== 'done') { act.completedDate = new Date().toISOString().slice(0,10); act.onTime = act.date ? daysDiff(act.date) >= 0 : true; }
-  if(field === 'status' && val !== 'done' && prev === 'done') { act.completedDate = null; act.onTime = null; }
-  save(); renderDetail(); renderCompliance();
-}
-function deleteAct(id) { if(!activeProject) return; activeProject.activities = activeProject.activities.filter(a => a.id !== id); save(); renderDetail(); renderCompliance(); }
-function saveNotes() { if(activeProject) { activeProject.notes = document.getElementById('notes-box').value; save(); } }
-
-function renderQ(q) {
-  const c = document.getElementById(q.toLowerCase() + '-view');
-  if(!projects.length) { c.innerHTML = '<div class="empty">Sin proyectos.</div>'; return; }
-  c.innerHTML = projects.map(p => {
-    const acts = p.activities.filter(a => a.q === q);
-    const pct = qPct(p.activities, q);
-    const rows = acts.length ? acts.map(a => `<tr><td>${a.name}${a.subArea?` <span class="badge b-area" style="font-size:10px">${a.subArea}</span>`:''}</td><td><span class="badge ${BADGE[a.status]}">${STATUSES[a.status]}</span></td><td>${fmtDate(a.date)}</td></tr>`).join('') : `<tr><td colspan="3" style="color:var(--text-secondary);font-size:12px;padding:10px 1rem">Sin actividades en ${q}</td></tr>`;
-    return `<div class="q-block"><div class="q-bh"><span class="q-bt">${p.name}${p.area?` <span class="badge b-area" style="font-size:10px">${p.area}</span>`:''}</span><span style="font-size:13px;font-weight:500;color:${pct===100?'#639922':pct===null?'var(--text-secondary)':'var(--text-primary)'}">${pct===null?'Sin actividades':`${pct}% completado`}</span></div><table class="q-table"><thead><tr><th style="width:55%">Actividad</th><th style="width:25%">Estado</th><th style="width:20%">Fecha</th></tr></thead><tbody>${rows}</tbody></table></div>`;
-  }).join('');
-}
-
-// Persistencia en localStorage
-function save() {
-  try { localStorage.setItem('dash_projects_2025', JSON.stringify(projects)); } catch(e) {}
-}
-function load() {
-  try {
-    const d = localStorage.getItem('dash_projects_2025');
-    if(d) { projects = JSON.parse(d); return; }
-  } catch(e) {}
-  initDefaultProjects();
-}
-
-function mka(name, status, date, q, subArea='') { return { id:uid(), name, status, date, q, subArea, completedDate:null, onTime:null }; }
-const hrbpActs = (area) => [
-  mka('PDI de área Q1','pending','','Q1',area), mka('PDI de área Q2','pending','','Q2',area),
-  mka('PDI de área Q3','pending','','Q3',area), mka('PDI de área Q4','pending','','Q4',area),
-  mka('Cumpleaños Q1','pending','','Q1',area), mka('Cumpleaños Q2','pending','','Q2',area),
-  mka('Cumpleaños Q3','pending','','Q3',area), mka('Cumpleaños Q4','pending','','Q4',area),
-  mka('Seguimiento PDI Q1','pending','','Q1',area), mka('Seguimiento PDI Q2','pending','','Q2',area),
-  mka('Seguimiento PDI Q3','pending','','Q3',area), mka('Seguimiento PDI Q4','pending','','Q4',area),
-  mka('Seguimientos Q1','pending','','Q1',area), mka('Seguimientos Q2','pending','','Q2',area),
-  mka('Seguimientos Q3','pending','','Q3',area), mka('Seguimientos Q4','pending','','Q4',area),
-  mka('Entrenamientos Q1','pending','','Q1',area), mka('Entrenamientos Q2','pending','','Q2',area),
-  mka('Entrenamientos Q3','pending','','Q3',area), mka('Entrenamientos Q4','pending','','Q4',area),
-  mka('Alineación plan desarrollo trabajo 2026','pending','','Q1',area),
-  mka('Encuesta favorabilidad / Feedback','pending','','Q4',area),
-];
-
-function initDefaultProjects() {
-  projects = [
-    { id:uid(), name:'LevelUp', area:'Formación', subareas:[], notes:'', activities:[
-      mka('Construcción malla de formación','pending','','Q1'), mka('Diseño de sesiones','pending','','Q1'),
-      mka('Agendamiento sesiones de formación','pending','','Q1'), mka('Lanzamiento','pending','','Q2'),
-      mka('Consolidar inscritos','pending','','Q2'), mka('Definición de proyectos','pending','','Q2'),
-      mka('Graduación','pending','','Q4'),
-    ]},
-    { id:uid(), name:'Plan formación 2026', area:'Formación', subareas:['Área 1','Área 2','Área 3','Área 4'], notes:'', activities:[] },
-    { id:uid(), name:'Plan formación HACCP', area:'Formación', subareas:[], notes:'', activities:[
-      mka('Diagnóstico de necesidades','pending','','Q1'), mka('Diseño del plan','pending','','Q1'),
-      mka('Ejecución sesiones','pending','','Q2'), mka('Seguimiento y cierre','pending','','Q3'),
-    ]},
-    { id:uid(), name:'Intervención PVO', area:'Formación', subareas:[], notes:'', activities:[
-      mka('Taller conexión PVO','pending','','Q2'), mka('Taller conexión líderes de área','pending','','Q2'),
-    ]},
-    { id:uid(), name:'HRBP Desarrollo de clientes', area:'HRBP', subareas:['Desarrollo de clientes'], notes:'', activities:hrbpActs('Desarrollo de clientes') },
-    { id:uid(), name:'HRBP Gestión estratégica', area:'HRBP', subareas:['Gestión estratégica'], notes:'', activities:hrbpActs('Gestión estratégica') },
-    { id:uid(), name:'HRBP Desarrollo talento humano', area:'HRBP', subareas:['Desarrollo talento humano'], notes:'', activities:hrbpActs('Desarrollo talento humano') },
-    { id:uid(), name:'HRBP Gestión administrativa', area:'HRBP', subareas:['Gestión administrativa'], notes:'', activities:hrbpActs('Gestión administrativa') },
-    { id:uid(), name:'LMS Super', area:'LMS', subareas:[], notes:'', activities:[
-      mka('Cierre contrato UBITS','pending','','Q1'), mka('Inicio diseño LMS interno','pending','','Q2'),
-      mka('Backup información UBITS','pending','','Q1'),
-    ]},
-    { id:uid(), name:'E-Learning', area:'E-Learning', subareas:[], notes:'', activities:[
-      mka('Direccionamiento estratégico','pending','','Q1'), mka('GID','pending','','Q2'),
-      mka('Transformación Digital','pending','','Q3'), mka('MIG','pending','','Q4'),
-    ]},
-    { id:uid(), name:'Viernes de aprendizaje digital', area:'Formación', subareas:[], notes:'', activities:[
-      mka('Definición de la malla','pending','','Q1'), mka('Construcción sesiones de formación','pending','','Q1'),
-      mka('Inscripciones Mayo','pending','','Q2'), mka('Inscripciones Junio','pending','','Q2'),
-      mka('Inscripciones Julio','pending','','Q3'), mka('Inscripciones Agosto','pending','','Q3'),
-      mka('Inscripciones Septiembre','pending','','Q3'), mka('Inscripciones Octubre','pending','','Q4'),
-      mka('Inscripciones Noviembre','pending','','Q4'),
-    ]},
-    { id:uid(), name:'Onboarding', area:'Onboarding', subareas:[], notes:'', activities:[
-      mka('Diseño del proceso','pending','','Q1'), mka('Implementación','pending','','Q2'),
-      mka('Seguimiento y ajustes','pending','','Q3'), mka('Evaluación y cierre','pending','','Q4'),
-    ]},
-  ];
-}
-
-load();
-renderProjects();
-renderUrgency();
-renderCompliance();
+loadFromSheets();
 </script>
 </body>
 </html>
